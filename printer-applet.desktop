@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Printer Applet
+Comment=System tray icon for managing print jobs
+Exec=printer-applet
+Terminal=false
+Type=Application
+Icon=printer
+OnlyShowIn=KDE;
