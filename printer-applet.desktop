@@ -1,15 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Printer Applet
-Name[pt]='Applet' da Impressora
-Name[pt_BR]='Applet' da Impressora
-Name[x-test]=xxPrinter Appletxx
-Name[zh_TW]=印表機小程式
 Comment=System tray icon for managing print jobs
-Comment[pt]=Ícone da bandeja do sistema para gerir as tarefas de impressão
-Comment[pt_BR]=Ícone da bandeja do sistema para gerir as tarefas de impressão
-Comment[x-test]=xxSystem tray icon for managing print jobsxx
-Comment[zh_TW]=管理印表工輟的系統匣圖示
 Exec=printer-applet
 Terminal=false
 Type=Application
