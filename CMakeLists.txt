@@ -8,13 +8,18 @@ macro_optional_find_package(PythonLibrary)
 macro_optional_find_package(SIP)
 
 find_package(PyQt4)
-IF(PYQT4_FOUND)
+IF(NOT PYQT4_FOUND)
+    macro_log_feature(PYQT4_FOUND "PyQt4" "PyQt4 was not found.  It is needed by printer-applet to run." "http://www.riverbankcomputing.co.uk/pyqt/" FALSE)
+ENDIF(NOT PYQT4_FOUND)
+
+find_package(PyCups)
+IF(PYCUPS_FOUND)
     install( FILES
         printer-applet-printers.ui
         printer-applet.py
         printer-applet.ui
         DESTINATION ${DATA_INSTALL_DIR}/printer-applet )
     PYKDE4_ADD_EXECUTABLE(printer-applet.py printer-applet)
-else (PYQT4_FOUND)
-    macro_log_feature(PYQT4_FOUND "PyQt4" "PyQt4 was not found.  It is needed by printer-applet to run." "http://www.riverbankcomputing.co.uk/pyqt/" FALSE)
-ENDIF(PYQT4_FOUND)
+else (PYCUPS_FOUND)
+    macro_log_feature(PYCUPS_FOUND "PyCups" "PyCups was not found.  It is needed by printer-applet to run." "http://cyberelk.net/tim/software/pycups/" FALSE)
+ENDIF(PYCUPS_FOUND)

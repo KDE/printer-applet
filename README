@@ -6,14 +6,14 @@ It is a Qt port of system-config-printer by Tim Waugh from Red Hat.
 
 Dependencies are...
 
-python-cups:  http://cyberelk.net/tim/data/pycups/
+PyQt4: http://www.riverbankcomputing.co.uk/pyqt/
+
+python-cups:  http://cyberelk.net/tim/software/pycups/
 
 hal-cups-utils:  svn co http://svn.fedorahosted.org/svn/hal-cups-utils/trunk/
 
 hal-cups-utils needs the common parts of system-config-printer (cupshelpers.py, ppds.py, probe_printer.py):
 svn co http://svn.fedorahosted.org/svn/system-config-printer/trunk
-
-PyQt4: http://www.riverbankcomputing.co.uk/pyqt/
 
 Unfortunately it does not currently use PyKDE4 because KApplication loads QtDbus which freezes when we use python-dbus.
 
