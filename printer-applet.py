@@ -57,6 +57,8 @@ if os.path.exists("printer-applet.ui"):
 else:
     APPDIR=KDEDATADIR + "/printer-applet"
 
+SYSTEM_CONFIG_PRINTER_DIR = "/usr/share/system-config-printer"
+
 MIN_REFRESH_INTERVAL = 1 # seconds
 DOMAIN="printer-applet"
 CONNECTING_TIMEOUT = 60 # seconds
@@ -907,7 +909,7 @@ class NewPrinterNotification(dbus.service.Object):
             return
         del c
 
-        sys.path.append (APPDIR)
+        sys.path.append (SYSTEM_CONFIG_PRINTER_DIR)
         from ppds import ppdMakeModelSplit
         (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
         driver = make + " " + model
