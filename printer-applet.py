@@ -69,6 +69,11 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
 
+if QFile.exists(SYSTEM_CONFIG_PRINTER_DIR + "/ppds.py"):
+    AUTOCONFIGURE = True
+else:
+    AUTOCONFIGURE = False
+
 import gettext
 gettext.textdomain(DOMAIN)
 def i18n(string):
@@ -303,7 +308,8 @@ class JobManager(QObject):
             print >> sys.stderr, "%s: failed to connect to system D-Bus" % PROGRAM_NAME
             sys.exit (1)
 
-        notification = NewPrinterNotification(bus, self)
+        if AUTOCONFIGURE:
+            notification = NewPrinterNotification(bus, self)
 
         # D-Bus
         bus.add_signal_receiver (self.handle_dbus_signal,
