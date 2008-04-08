@@ -22,6 +22,7 @@ IF(PYQT4_FOUND AND PYCUPS_FOUND)
         printer-applet-printers.ui
         printer-applet.py
         printer-applet.ui
+        printer-appletui.rc
         DESTINATION ${DATA_INSTALL_DIR}/printer-applet )
     PYKDE4_ADD_EXECUTABLE(printer-applet.py printer-applet)
 ENDIF(PYQT4_FOUND AND PYCUPS_FOUND)
