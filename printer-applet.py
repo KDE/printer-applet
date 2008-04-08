@@ -2,7 +2,7 @@
 
 #############################################################################
 ##
-## Copyright 2007 Canonical Ltd
+## Copyright 2007-2008 Canonical Ltd
 ## Author: Jonathan Riddell <jriddell@ubuntu.com>
 ##
 ## Includes code from System Config Printer
@@ -68,6 +68,8 @@ import time
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
+from PyKDE4.kdecore import ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions
+from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction
 
 if QFile.exists(SYSTEM_CONFIG_PRINTER_DIR + "/ppds.py"):
     AUTOCONFIGURE = True
@@ -97,7 +99,7 @@ import dbus
 import dbus.mainloop.qt
 import dbus.service
 
-class MainWindow(QMainWindow):
+class MainWindow(KXmlGuiWindow):
     """Our main GUI dialogue, overridden so that closing it doesn't quit the app"""
 
     def closeEvent(self, event):
@@ -297,6 +299,26 @@ class JobManager(QObject):
         self.hold = self.rightClickMenu.addAction(i18n("_Hold").replace("_",""), self.on_job_hold_activate)
         self.release = self.rightClickMenu.addAction(i18n("_Release").replace("_",""), self.on_job_release_activate)
         self.reprint = self.rightClickMenu.addAction(i18n("Re_print").replace("_",""), self.on_job_reprint_activate)
+
+        closeAction = KStandardAction.close(self.mainWindow, SLOT("hideMainWindow()"), self.mainWindow.actionCollection());
+        self.connect(closeAction, SIGNAL("triggered(bool)"), self.hideMainWindow)
+        #FIXME PyKDE bug? KStandardAction.close(self.hideMainWindow, self.mainWindow.actionCollection())
+
+        refreshAction = self.mainWindow.actionCollection().addAction("refresh")
+        refreshAction.setIcon( KIcon("view-refresh") )
+        refreshAction.setText( i18n( "&Refresh" ) )
+        refreshAction.setShortcut(QKeySequence(Qt.Key_F5))
+        self.connect(refreshAction, SIGNAL("triggered(bool)"), self.hideMainWindow);
+
+        showCompletedJobsAction = KToggleAction("Show Completed Jobs", self.mainWindow)
+        self.mainWindow.actionCollection().addAction("show_completed_jobs", showCompletedJobsAction)
+        self.connect(showCompletedJobsAction, SIGNAL("triggered(bool)"), self.on_show_completed_jobs_activate);
+
+        showPrinterStatusAction = KToggleAction("Show Printer Status", self.mainWindow)
+        self.mainWindow.actionCollection().addAction("show_printer_status", showPrinterStatusAction)
+        self.connect(showPrinterStatusAction, SIGNAL("triggered(bool)"), self.on_show_printer_status_activate);
+
+        self.mainWindow.createGUI()
 
         cups.setPasswordCB(self.cupsPasswdCallback)
 
@@ -935,15 +957,38 @@ class NewPrinterNotification(dbus.service.Object):
 
 if __name__ == "__main__":
     """start the application.  TODO, gtk frontend does clever things here to not start the GUI until it has to"""
-    #Oxygen doesn't work with python-dbus (it loads QtDbus which clashes) so force to plastique until that is fixed
-    args = sys.argv + ["-style=plastique"]
-    #KApplication also loads QtDbus which clashes with python-dbus, so stick with QApplication for now
-    app = QApplication(args)
-    app.setWindowIcon(QIcon(KDEDIR + "/share/icons/oxygen/128x128/devices/printer.png"))
+    appName     = "printer-applet"
+    catalogue   = "printer-applet"
+    programName = ki18n("Printer Applet")
+    version     = "1.0"
+    description = ki18n("Appler to view current print jobs and configure new printers")
+    license     = KAboutData.License_GPL
+    copyright   = ki18n("2007-2008 Canonical Ltd")
+    text        = ki18n("none")
+    homePage    = "https://launchpad.net/system-config-printer"
+    bugEmail    = ""
+
+    aboutData   = KAboutData (appName, catalogue, programName, version, description,
+                                license, copyright, text, homePage, bugEmail)
+
+    aboutData.addAuthor(ki18n("Jonathan Riddell"), ki18n("Author"))
+    aboutData.addAuthor(ki18n("Tim Waugh/Red Hat"), ki18n("System Config Printer Author"))
+
+    options = KCmdLineOptions()
+    options.add("show", ki18n("Show even when nothing printing"))
+
+    KCmdLineArgs.init(sys.argv, aboutData)
+    KCmdLineArgs.addCmdLineOptions(options)
+
+    app = KApplication()
+
+    args = KCmdLineArgs.parsedArgs()
+
+    #app.setWindowIcon(QIcon(KDEDIR + "/share/icons/oxygen/128x128/devices/printer.png"))
     if app.isSessionRestored():
          sys.exit(1)
     applet = JobManager()
-    if "--show" in sys.argv:
+    if args.isSet("show"):
         applet.mainWindow.show()
         applet.sysTray.show()
     sys.exit(app.exec_())
