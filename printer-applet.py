@@ -36,27 +36,6 @@ import os
 import subprocess
 import sys
 
-try:
-    KDE4CONFIG = "kde4-config"
-    KDEDIR = subprocess.Popen([KDE4CONFIG, "--prefix"], stdout=subprocess.PIPE).communicate()[0]
-    KDEDATADIR = subprocess.Popen([KDE4CONFIG, "--path", "data"], stdout=subprocess.PIPE).communicate()[0]
-except OSError:
-    try:
-        KDE4CONFIG = "/usr/lib/kde4/bin/kde4-config"
-        KDEDIR = subprocess.Popen([KDE4CONFIG, "--prefix"], stdout=subprocess.PIPE).communicate()[0]
-        KDEDATADIR = subprocess.Popen([KDE4CONFIG, "--path", "data"], stdout=subprocess.PIPE).communicate()[0]
-    except OSError:
-        print "Could not find kde4-config, exiting."
-        sys.exit(1)
-KDEDIR = KDEDIR.rstrip()
-KDEDATADIR = KDEDATADIR.rstrip()
-KDEDATADIR = KDEDATADIR.split(":")[-1]
-
-if os.path.exists("printer-applet.ui"):
-    APPDIR="."
-else:
-    APPDIR=KDEDATADIR + "/printer-applet"
-
 SYSTEM_CONFIG_PRINTER_DIR = "/usr/share/system-config-printer"
 
 MIN_REFRESH_INTERVAL = 1 # seconds
@@ -68,7 +47,7 @@ import time
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
-from PyKDE4.kdecore import ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions
+from PyKDE4.kdecore import ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs
 from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction
 
 if QFile.exists(SYSTEM_CONFIG_PRINTER_DIR + "/ppds.py"):
@@ -267,6 +246,13 @@ class JobManager(QObject):
         self.connecting_to_device = {} # dict of printer->time first seen
         self.still_connecting = set()
         self.special_status_icon = False
+
+        #Use local files if in current directory
+        if os.path.exists("printer-applet.ui"):
+            APPDIR="."
+        else:
+            file =  KStandardDirs.locate("appdata", "printer-applet.ui")
+            APPDIR = file.left(file.lastIndexOf("/"))
 
         self.mainWindow = MainWindow()
         uic.loadUi(APPDIR + "/" + "printer-applet.ui", self.mainWindow)
@@ -521,8 +507,8 @@ class JobManager(QObject):
 
             if self.trayicon:
                 icon = StateReason.LEVEL_ICON[reason.get_level ()]
-                emblem = QPixmap(KDEDIR + "/share/icons/oxygen/16x16/" + icon+".png")
-                pixbuf = QPixmap(KDEDIR + "/share/icons/oxygen/22x22/devices/printer.png")
+                emblem = QPixmap(KIcon(icon).pixmap(16, 16))
+                pixbuf = QPixmap(KIcon("printer").pixmap(22, 22))
                 painter = QPainter(pixbuf)
                 painter.drawPixmap(pixbuf.width()-emblem.width(),pixbuf.height()-emblem.height(),emblem)
                 painter.end()
@@ -976,7 +962,7 @@ if __name__ == "__main__":
 
     args = KCmdLineArgs.parsedArgs()
 
-    #app.setWindowIcon(QIcon(KDEDIR + "/share/icons/oxygen/128x128/devices/printer.png"))
+    app.setWindowIcon(KIcon("printer"))
     if app.isSessionRestored():
          sys.exit(1)
     applet = JobManager()
