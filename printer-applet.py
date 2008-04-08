@@ -274,22 +274,14 @@ class JobManager(QObject):
         self.printersWindow = PrintersWindow(self)
         uic.loadUi(APPDIR + "/" + "printer-applet-printers.ui", self.printersWindow)
 
-        self.sysTray = QSystemTrayIcon(QIcon(KDEDIR + "/share/icons/oxygen/22x22/devices/printer.png"), self.mainWindow)
+        self.sysTray = QSystemTrayIcon(KIcon("printer"), self.mainWindow)
         #self.sysTray.show()
         self.connect(self.sysTray, SIGNAL("activated( QSystemTrayIcon::ActivationReason )"), self.showMainWindow)
 
         self.menu = QMenu()
         self.menu.addAction(i18n("_Hide").replace("_", ""), self.on_icon_hide_activate)
-        self.menu.addAction(QIcon(KDEDIR + "/share/icons/oxygen/16x16/actions/application-exit.png"), i18n("Quit"), self.on_icon_quit_activate)
+        self.menu.addAction(KIcon("application-exit"), i18n("Quit"), self.on_icon_quit_activate)
         self.sysTray.setContextMenu(self.menu)
-
-        self.mainWindow.actionClose.setIcon(QIcon(KDEDIR + "/share/icons/oxygen/16x16/actions/window-close.png"))
-        self.mainWindow.actionRefresh_2.setIcon(QIcon(KDEDIR + "/share/icons/oxygen/16x16/actions/view-refresh.png"))
-
-        self.connect(self.mainWindow.actionRefresh_2, SIGNAL("triggered(bool)"), self.on_refresh_activate)
-        self.connect(self.mainWindow.actionShow_Completed_Jobs_2, SIGNAL("triggered(bool)"), self.on_show_completed_jobs_activate)
-        self.connect(self.mainWindow.actionShow_Printer_Status, SIGNAL("triggered(bool)"), self.on_show_printer_status_activate)
-        self.connect(self.mainWindow.actionClose, SIGNAL("triggered(bool)"), self.hideMainWindow)
 
         self.mainWindow.treeWidget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self.mainWindow.treeWidget, SIGNAL("customContextMenuRequested(const QPoint&)"), self.on_treeview_button_press_event)
