@@ -249,7 +249,7 @@ class JobManager(QObject):
 
         #Use local files if in current directory
         if os.path.exists("printer-applet.ui"):
-            APPDIR="."
+            APPDIR=QDir.currentPath()
         else:
             file =  KStandardDirs.locate("appdata", "printer-applet.ui")
             APPDIR = file.left(file.lastIndexOf("/"))
@@ -296,7 +296,7 @@ class JobManager(QObject):
         self.mainWindow.actionCollection().addAction("show_printer_status", showPrinterStatusAction)
         self.connect(showPrinterStatusAction, SIGNAL("triggered(bool)"), self.on_show_printer_status_activate);
 
-        self.mainWindow.createGUI()
+        self.mainWindow.createGUI(APPDIR + "/printer-appletui.rc")
 
         cups.setPasswordCB(self.cupsPasswdCallback)
 
