@@ -39,7 +39,6 @@ import sys
 SYSTEM_CONFIG_PRINTER_DIR = "/usr/share/system-config-printer"
 
 MIN_REFRESH_INTERVAL = 1 # seconds
-DOMAIN="printer-applet"
 CONNECTING_TIMEOUT = 60 # seconds
 
 import time
@@ -47,18 +46,13 @@ import time
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
-from PyKDE4.kdecore import ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs
+from PyKDE4.kdecore import i18n, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs
 from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction
 
 if QFile.exists(SYSTEM_CONFIG_PRINTER_DIR + "/ppds.py"):
     AUTOCONFIGURE = True
 else:
     AUTOCONFIGURE = False
-
-import gettext
-gettext.textdomain(DOMAIN)
-def i18n(string):
-    return unicode(gettext.gettext(string), "utf-8")
 
 def translate(self, prop):
     """reimplement method from uic to change it to use gettext"""
@@ -249,7 +243,7 @@ class JobManager(QObject):
 
         #Use local files if in current directory
         if os.path.exists("printer-applet.ui"):
-            APPDIR=QDir.currentPath()
+            APPDIR = QDir.currentPath()
         else:
             file =  KStandardDirs.locate("appdata", "printer-applet.ui")
             APPDIR = file.left(file.lastIndexOf("/"))
