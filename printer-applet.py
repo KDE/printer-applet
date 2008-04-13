@@ -933,7 +933,7 @@ if __name__ == "__main__":
     catalogue   = "printer-applet"
     programName = ki18n("Printer Applet")
     version     = "1.0"
-    description = ki18n("Appler to view current print jobs and configure new printers")
+    description = ki18n("Applet to view current print jobs and configure new printers")
     license     = KAboutData.License_GPL
     copyright   = ki18n("2007-2008 Canonical Ltd")
     text        = ki18n("none")
