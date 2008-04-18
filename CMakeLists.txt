@@ -12,12 +12,17 @@ IF(NOT PYQT4_FOUND)
     macro_log_feature(PYQT4_FOUND "PyQt4" "PyQt4 was not found.  It is needed by printer-applet to run." "http://www.riverbankcomputing.co.uk/pyqt/" FALSE)
 ENDIF(NOT PYQT4_FOUND)
 
+find_package(PyKDE)
+IF(NOT PYKDE_FOUND)
+    macro_log_feature(PYKDE_FOUND "PyKDE" "PyKDE was not found.  It is needed by printer-applet to run." "http://www.riverbankcomputing.co.uk/pykde/" FALSE)
+ENDIF(NOT PYKDE_FOUND)
+
 find_package(PyCups)
 IF(NOT PYQT4_FOUND)
     macro_log_feature(PYCUPS_FOUND "PyCups" "PyCups was not found.  It is needed by printer-applet to run." "http://cyberelk.net/tim/software/pycups/" FALSE)
 ENDIF(NOT PYQT4_FOUND)
 
-IF(PYQT4_FOUND AND PYCUPS_FOUND)
+IF(PYQT4_FOUND AND PYKDE_FOUND AND PYCUPS_FOUND)
     install( FILES
         printer-applet-printers.ui
         printer-applet.py
@@ -25,9 +30,9 @@ IF(PYQT4_FOUND AND PYCUPS_FOUND)
         printer-appletui.rc
         DESTINATION ${DATA_INSTALL_DIR}/printer-applet )
     PYKDE4_ADD_EXECUTABLE(printer-applet.py printer-applet)
-ENDIF(PYQT4_FOUND AND PYCUPS_FOUND)
+ENDIF(PYQT4_FOUND AND PYKDE_FOUND AND PYCUPS_FOUND)
 
 find_package(SystemConfigPrinter)
 IF(NOT SYSTEMCONFIGPRINTER_FOUND)
-    macro_log_feature(SYSTEMCONFIGPRINTER_FOUND "system-config-printer" "system-config-printer was not found.  Some of its modules (cupshelpers.py and ppds.py) are can be used by printer-applet for auto configure of new printers.  You should also install hal-cups-utils <svn co http://svn.fedorahosted.org/svn/hal-cups-utils/trunk/>" "http://cyberelk.net/tim/software/system-config-printer/" FALSE)
+    macro_log_feature(SYSTEMCONFIGPRINTER_FOUND "system-config-printer" "system-config-printer was not found.  Some of its modules (cupshelpers.py and ppds.py) are optionally used by printer-applet for auto configure of new printers.  You should also install hal-cups-utils <svn co http://svn.fedorahosted.org/svn/hal-cups-utils/trunk/>" "http://cyberelk.net/tim/software/system-config-printer/" FALSE)
 ENDIF(NOT SYSTEMCONFIGPRINTER_FOUND)
