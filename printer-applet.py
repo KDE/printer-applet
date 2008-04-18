@@ -168,7 +168,7 @@ class StateReason:
                 title = i18n("Printer warning")
             elif self.get_level () == self.ERROR:
                 title = i18n("Printer error")
-            text = ki18n("Printer '%1': '%2'.")).subs(self.get_printer()).subs(self.get_reason ()).toString()
+            text = ki18n("Printer '%1': '%2'.").subs(self.get_printer()).subs(self.get_reason ()).toString()
         return (title, text)
 
     def get_tuple (self):
