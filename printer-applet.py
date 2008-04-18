@@ -920,7 +920,7 @@ class NewPrinterNotification(dbus.service.Object):
         if status == self.STATUS_SUCCESS:
             text = i18n("`%s' is ready for printing.") % name
         else: # Model mismatch
-            text = unicode(ki18n("`%1' has been added, using the `%2' driver.").subs(name).subs(driver).toString(), 'utf-8')
+            text = ki18n("`%1' has been added, using the `%2' driver.").subs(name).subs(driver).toString()
 
         self.jobmanager.notify_new_printer (name, title, text)
 
