@@ -168,7 +168,7 @@ class StateReason:
                 title = i18n("Printer warning")
             elif self.get_level () == self.ERROR:
                 title = i18n("Printer error")
-            text = QString(i18n("Printer '%1': '%2'.")).arg(self.get_printer()).arg(self.get_reason ())
+            text = ki18n("Printer '%1': '%2'.")).subs(self.get_printer()).subs(self.get_reason ()).toString()
         return (title, text)
 
     def get_tuple (self):
@@ -920,7 +920,7 @@ class NewPrinterNotification(dbus.service.Object):
         if status == self.STATUS_SUCCESS:
             text = i18n("`%s' is ready for printing.") % name
         else: # Model mismatch
-            text = unicode(QString(i18n("`%1' has been added, using the `%2' driver.")).arg(name).arg(driver), 'utf-8')
+            text = unicode(ki18n("`%1' has been added, using the `%2' driver.").subs(name).subs(driver).toString(), 'utf-8')
 
         self.jobmanager.notify_new_printer (name, title, text)
 
