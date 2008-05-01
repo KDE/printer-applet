@@ -1,12 +1,17 @@
-printer-applet is a system tray utility.  It shows current print jobs, shows printer warnings and errors and shows when printers that have been plugged in for the first time are being auto-configured by hal-cups-utils.
+printer-applet is a system tray utility.  It shows current print jobs,
+shows printer warnings and errors and shows when printers that have
+been plugged in for the first time are being auto-configured by
+hal-cups-utils.
 
 It replaces kjobviewer in KDE 3.
 
-It is a Qt port of system-config-printer by Tim Waugh from Red Hat.
+It is a KDE port of system-config-printer by Tim Waugh from Red Hat.
 
 Dependencies are...
 
 PyQt4: http://www.riverbankcomputing.co.uk/pyqt/
+
+PyKDE4: http://www.riverbankcomputing.co.uk/pykde/ or kdebindings
 
 python-cups:  http://cyberelk.net/tim/software/pycups/
 
