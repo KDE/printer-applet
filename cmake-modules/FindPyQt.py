@@ -6,7 +6,10 @@ f=open('/tmp/workfile', 'w')
 f.write("finding Qt")
 f.close()
 
-import PyQt4.pyqtconfig
+try:
+    import PyQt4.pyqtconfig
+except:
+    exit(1)
 
 pyqtcfg = PyQt4.pyqtconfig.Configuration()
 print("pyqt_version:%06.0x" % pyqtcfg.pyqt_version)
