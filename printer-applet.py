@@ -548,8 +548,7 @@ class JobManager(QObject):
                         elif mins == 1:
                             t = i18n("%d hours and 1 minute ago") % hours
                         else:
-                            t = i18n("%d hours and %d minutes ago") % \
-                                (hours, mins)
+                            t = ki18n("%1 hours and %2 minutes ago").subs(hours).subs(mins).toString()
                 else:
                     need_update = True
                     mins = ago / 60
