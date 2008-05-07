@@ -1,7 +1,21 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Printer Applet
+Name[ga]=Feidhmchláirín Printéara
+Name[pt]='Applet' de Impressoras
+Name[pt_BR]='Applet' de Impressoras
+Name[sv]=Skrivarminiprogram
+Name[tr]=Yazıcı Programcığı
+Name[x-test]=xxPrinter Appletxx
+Name[zh_TW]=印表機小程式
 Comment=System tray icon for managing print jobs
+Comment[ga]=Deilbhín i dtráidire an chórais a bhainistíonn jabanna priontála
+Comment[pt]=Um ícone da bandeja do sistema para gerir as tarefas de impressão
+Comment[pt_BR]=Um ícone da bandeja do sistema para gerir as tarefas de impressão
+Comment[sv]=Ikon i systembrickan för att hantera utskriftsjobb
+Comment[tr]=Yazdırma görevlerini yönetmek için sistem çekmecesi simgesi
+Comment[x-test]=xxSystem tray icon for managing print jobsxx
+Comment[zh_TW]=管理印表工作的系統匣圖示
 Exec=printer-applet
 Terminal=false
 Type=Application
