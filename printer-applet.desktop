@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Name=Printer Applet
 Name[ga]=Feidhmchláirín Printéara
+Name[km]=អាប់ភ្លេត​ម៉ាស៊ីន​បោះពុម្ព
 Name[pt]='Applet' de Impressoras
 Name[pt_BR]='Applet' de Impressoras
 Name[sv]=Skrivarminiprogram
@@ -10,6 +11,7 @@ Name[x-test]=xxPrinter Appletxx
 Name[zh_TW]=印表機小程式
 Comment=System tray icon for managing print jobs
 Comment[ga]=Deilbhín i dtráidire an chórais a bhainistíonn jabanna priontála
+Comment[km]=រូបតំណាង​ថាស​ប្រព័ន្ធ​សម្រាប់​គ្រប់គ្រង​ការងារ​បោះពុម្ព
 Comment[pt]=Um ícone da bandeja do sistema para gerir as tarefas de impressão
 Comment[pt_BR]=Um ícone da bandeja do sistema para gerir as tarefas de impressão
 Comment[sv]=Ikon i systembrickan för att hantera utskriftsjobb
