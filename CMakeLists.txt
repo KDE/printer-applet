@@ -34,6 +34,7 @@ IF(INSTALL_PRINTER_APPLET)
         printer-appletui.rc
         DESTINATION ${DATA_INSTALL_DIR}/printer-applet )
     PYKDE4_ADD_EXECUTABLE(printer-applet.py printer-applet)
+    install(FILES printer-applet.desktop DESTINATION ${AUTOSTART_INSTALL_DIR})
 ENDIF(INSTALL_PRINTER_APPLET)
 
 find_package(SystemConfigPrinter)
