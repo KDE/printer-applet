@@ -46,7 +46,7 @@ import time
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
-from PyKDE4.kdecore import i18n, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs
+from PyKDE4.kdecore import i18n, i18nc, i18np, i18ncp, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs, KLocalizedString
 from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction
 
 if QFile.exists(SYSTEM_CONFIG_PRINTER_DIR + "/ppds.py"):
@@ -140,27 +140,27 @@ class StateReason:
     def get_description (self):
         messages = {
             'toner-low': (i18n("Toner low"),
-                          i18n("Printer '%s' is low on toner.")),
+                          ki18n("Printer '%1' is low on toner.")),
             'toner-empty': (i18n("Toner empty"),
-                            i18n("Printer '%s' has no toner left.")),
+                            ki18n("Printer '%1' has no toner left.")),
             'cover-open': (i18n("Cover open"),
-                           i18n("The cover is open on printer '%s'.")),
+                           ki18n("The cover is open on printer '%1'.")),
             'door-open': (i18n("Door open"),
-                          i18n("The door is open on printer '%s'.")),
+                          ki18n("The door is open on printer '%1'.")),
             'media-low': (i18n("Paper low"),
-                          i18n("Printer '%s' is low on paper.")),
+                          ki18n("Printer '%1' is low on paper.")),
             'media-empty': (i18n("Out of paper"),
-                            i18n("Printer '%s' is out of paper.")),
+                            ki18n("Printer '%1' is out of paper.")),
             'marker-supply-low': (i18n("Ink low"),
-                                  i18n("Printer '%s' is low on ink.")),
+                                  ki18n("Printer '%1' is low on ink.")),
             'marker-supply-empty': (i18n("Ink empty"),
-                                    i18n("Printer '%s' has no ink left.")),
+                                    ki18n("Printer '%1' has no ink left.")),
             'connecting-to-device': (i18n("Not connected?"),
-                                     i18n("Printer '%s' may not be connected.")),
+                                     ki18n("Printer '%1' may not be connected.")),
             }
         try:
             (title, text) = messages[self.get_reason ()]
-            text = text % self.get_printer ()
+            text = text.subs (self.get_printer ()).to_string ()
         except KeyError:
             if self.get_level () == self.REPORT:
                 title = i18n("Printer report")
@@ -168,7 +168,7 @@ class StateReason:
                 title = i18n("Printer warning")
             elif self.get_level () == self.ERROR:
                 title = i18n("Printer error")
-            text = ki18n("Printer '%1': '%2'.").subs(self.get_printer()).subs(self.get_reason ()).toString()
+            text = i18n("Printer '%1': '%2'.", self.get_printer (), self.get_reason ())
         return (title, text)
 
     def get_tuple (self):
@@ -374,7 +374,7 @@ class JobManager(QObject):
             error_text = ('<span weight="bold" size="larger">' +
                           i18n('CUPS server error') + '</span>\n\n' +
                           i18n("There was an error during the CUPS "\
-                            "operation: '%s'.")) % message
+                            "operation: '%1'.", message))
         #fix Gtk's non-HTML for Qt
         error_text = error_text.replace("\n", "<br />")
         error_text = error_text.replace("span", "strong")
@@ -535,27 +535,16 @@ class JobManager(QObject):
                     need_update = True
                     hours = int (ago / 3600)
                     mins = int ((ago % 3600) / 60)
-                    if hours == 1:
-                        if mins == 0:
-                            t = i18n("1 hour ago")
-                        elif mins == 1:
-                            t = i18n("1 hour and 1 minute ago")
-                        else:
-                            t = i18n("1 hour and %d minutes ago") % mins
+                    if mins > 0:
+                        th = i18ncp("%1 in the '%1 and %2 ago' message below", "1 hour", "%1 hours", hours)
+                        tm = i18ncp("%2 in the '%1 and %2 ago' message below", "1 minute", "%1 minutes", hours)
+                        t = i18nc("Arguments are formatted hours and minutes from the messages above", "%1 and %2 ago", th, tm)
                     else:
-                        if mins == 0:
-                            t = i18n("%d hours ago")
-                        elif mins == 1:
-                            t = i18n("%d hours and 1 minute ago") % hours
-                        else:
-                            t = ki18n("%1 hours and %2 minutes ago").subs(hours).subs(mins).toString()
+                        t = i18np("1 hour ago", "%1 hours ago", hours)
                 else:
                     need_update = True
                     mins = ago / 60
-                    if mins < 2:
-                        t = i18n("a minute ago")
-                    else:
-                        t = i18n("%d minutes ago") % mins
+                    t = i18np("a minute ago", "%1 minutes ago", mins)
 
             #self.store.set_value (iter, 4, t)
             iter.setText(4, t)
@@ -615,11 +604,8 @@ class JobManager(QObject):
             if num_jobs == 0:
                 tooltip = i18n("No documents queued")
                 #FIXMEself.set_statusicon_from_pixbuf (self.icon_no_jobs)
-            elif num_jobs == 1:
-                tooltip = i18n("1 document queued")
-                #self.set_statusicon_from_pixbuf (self.icon_jobs)
             else:
-                tooltip = i18n("%d documents queued") % num_jobs
+                tooltip = i18np("1 document queued", "%1 documents queued", num_jobs)
                 #self.set_statusicon_from_pixbuf (self.icon_jobs)
 
         my_printers = set()
@@ -679,19 +665,19 @@ class JobManager(QObject):
                 try:
                     jstate = data['job-state']
                     s = int (jstate)
-                    state = { cups.IPP_JOB_PENDING:i18n("Pending"),
-                              cups.IPP_JOB_HELD:i18n("Held"),
-                              cups.IPP_JOB_PROCESSING: i18n("Processing"),
-                              cups.IPP_JOB_STOPPED: i18n("Stopped"),
-                              cups.IPP_JOB_CANCELED: i18n("Canceled"),
-                              cups.IPP_JOB_ABORTED: i18n("Aborted"),
-                              cups.IPP_JOB_COMPLETED: i18n("Completed") }[s]
+                    state = { cups.IPP_JOB_PENDING:i18nc("Job state", "Pending"),
+                              cups.IPP_JOB_HELD:i18nc("Job state", "Held"),
+                              cups.IPP_JOB_PROCESSING: i18nc("Job state", "Processing"),
+                              cups.IPP_JOB_STOPPED: i18nc("Job state", "Stopped"),
+                              cups.IPP_JOB_CANCELED: i18nc("Job state", "Canceled"),
+                              cups.IPP_JOB_ABORTED: i18nc("Job state", "Aborted"),
+                              cups.IPP_JOB_COMPLETED: i18nc("Job state", "Completed") }[s]
                 except ValueError:
                     pass
                 except IndexError:
                     pass    
             if state == None:
-                state = i18n("Unknown")
+                state = i18nc("Job state", "Unknown")
             iter.setText(5, state)
             columns = self.mainWindow.treeWidget.columnCount()
             for i in range(columns):
@@ -917,9 +903,9 @@ class NewPrinterNotification(dbus.service.Object):
             title = i18n("Missing printer driver")
 
         if status == self.STATUS_SUCCESS:
-            text = i18n("'%s' is ready for printing.") % name
+            text = i18n("'%1' is ready for printing.", name)
         else: # Model mismatch
-            text = ki18n("'%1' has been added, using the '%2' driver.").subs(name).subs(driver).toString()
+            text = i18n("'%1' has been added, using the '%2' driver.", name, driver)
 
         self.jobmanager.notify_new_printer (name, title, text)
 
@@ -933,7 +919,7 @@ if __name__ == "__main__":
     description = ki18n("Applet to view current print jobs and configure new printers")
     license     = KAboutData.License_GPL
     copyright   = ki18n("2007-2008 Canonical Ltd")
-    text        = ki18n("none")
+    text        = KLocalizedString()
     homePage    = "https://launchpad.net/system-config-printer"
     bugEmail    = ""
 
