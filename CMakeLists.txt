@@ -18,9 +18,9 @@ IF(NOT PYKDE_FOUND)
 ENDIF(NOT PYKDE_FOUND)
 
 find_package(PyCups)
-IF(NOT PYQT4_FOUND)
+IF(NOT PYCUPS_FOUND)
     macro_log_feature(PYCUPS_FOUND "PyCups" "PyCups was not found.  It is needed by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://cyberelk.net/tim/software/pycups/" FALSE)
-ENDIF(NOT PYQT4_FOUND)
+ENDIF(NOT PYCUPS_FOUND)
 
 IF(PYQT4_FOUND AND PYKDE_FOUND AND PYCUPS_FOUND)
     SET(INSTALL_PRINTER_APPLET TRUE)
