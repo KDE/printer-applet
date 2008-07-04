@@ -160,7 +160,7 @@ class StateReason:
             }
         try:
             (title, text) = messages[self.get_reason ()]
-            text = text.subs (self.get_printer ()).to_string ()
+            text = text.subs (self.get_printer ()).toString ()
         except KeyError:
             if self.get_level () == self.REPORT:
                 title = i18n("Printer report")
