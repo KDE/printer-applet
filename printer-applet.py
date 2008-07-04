@@ -279,7 +279,7 @@ class JobManager(QObject):
         refreshAction.setIcon( KIcon("view-refresh") )
         refreshAction.setText( i18n( "&Refresh" ) )
         refreshAction.setShortcut(QKeySequence(Qt.Key_F5))
-        self.connect(refreshAction, SIGNAL("triggered(bool)"), self.hideMainWindow);
+        self.connect(refreshAction, SIGNAL("triggered(bool)"), self.refresh);
 
         showCompletedJobsAction = KToggleAction("Show Completed Jobs", self.mainWindow)
         self.mainWindow.actionCollection().addAction("show_completed_jobs", showCompletedJobsAction)
