@@ -920,7 +920,7 @@ if __name__ == "__main__":
     license     = KAboutData.License_GPL
     copyright   = ki18n("2007-2008 Canonical Ltd")
     text        = KLocalizedString()
-    homePage    = "https://launchpad.net/system-config-printer"
+    homePage    = "http://utils.kde.org/projects/printer-applet"
     bugEmail    = ""
 
     aboutData   = KAboutData (appName, catalogue, programName, version, description,
