@@ -9,12 +9,12 @@ macro_optional_find_package(SIP)
 
 find_package(PyQt4)
 IF(NOT PYQT4_FOUND)
-    macro_log_feature(PYQT4_FOUND "PyQt4" "PyQt4 was not found.  It is needed by printer-applet to run. (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://www.riverbankcomputing.co.uk/pyqt/" FALSE)
+    macro_log_feature(PYQT4_FOUND "PyQt4" "PyQt4 was not found.  It is needed by printer-applet to run. (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://www.riverbankcomputing.co.uk/software/pyqt/intro" FALSE)
 ENDIF(NOT PYQT4_FOUND)
 
 find_package(PyKDE)
 IF(NOT PYKDE_FOUND)
-    macro_log_feature(PYKDE_FOUND "PyKDE" "PyKDE was not found.  It is needed by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://www.riverbankcomputing.co.uk/pykde/" FALSE)
+    macro_log_feature(PYKDE_FOUND "PyKDE" "PyKDE was not found.  It is needed by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://websvn.kde.org/trunk/KDE/kdebindings/python/pykde4/" FALSE)
 ENDIF(NOT PYKDE_FOUND)
 
 find_package(PyCups)
