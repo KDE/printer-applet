@@ -6,4 +6,5 @@
     <Action name="show_completed_jobs"/>
     <Action name="show_printer_status"/>
   </Menu>
+</MenuBar>
 </kpartgui>
