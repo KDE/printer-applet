@@ -8,7 +8,7 @@ SYSTEM_CONFIG_PRINTER_DIR = "/usr/share/system-config-printer"
 sys.path.append (SYSTEM_CONFIG_PRINTER_DIR)
 
 try:
-    import ppds, cupshelpers
+    import cupshelpers.ppds, cupshelpers.cupshelpers
 except:
     exit(1)
 print "Groovy"
