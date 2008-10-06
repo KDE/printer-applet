@@ -298,7 +298,7 @@ class JobManager(QObject):
         try:
             bus = dbus.SystemBus()
         except:
-            print >> sys.stderr, "%s: failed to connect to system D-Bus" % PROGRAM_NAME
+            print >> sys.stderr, "%s: printer-applet failed to connect to system D-Bus"
             sys.exit (1)
 
         if AUTOCONFIGURE:
