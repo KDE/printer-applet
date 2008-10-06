@@ -537,8 +537,8 @@ class JobManager(QObject):
                     hours = int (ago / 3600)
                     mins = int ((ago % 3600) / 60)
                     if mins > 0:
-                        th = i18ncp("%1 in the '%1 and %2 ago' message below", "1 hour", "%1 hours", hours)
-                        tm = i18ncp("%2 in the '%1 and %2 ago' message below", "1 minute", "%1 minutes", hours)
+                        th = unicode(i18ncp("%1 in the '%1 and %2 ago' message below", "1 hour", "%1 hours", hours), 'utf-8')
+                        tm = unicode(i18ncp("%2 in the '%1 and %2 ago' message below", "1 minute", "%1 minutes", hours), 'utf-8')
                         t = i18nc("Arguments are formatted hours and minutes from the messages above", "%1 and %2 ago", th, tm)
                     else:
                         t = i18np("1 hour ago", "%1 hours ago", hours)
