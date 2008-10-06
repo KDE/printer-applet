@@ -543,7 +543,7 @@ class JobManager(QObject):
                         t = i18np("1 hour ago", "%1 hours ago", hours)
                 else:
                     need_update = True
-                    mins = ago / 60
+                    mins = int(ago / 60)
                     t = i18np("a minute ago", "%1 minutes ago", mins)
 
             #self.store.set_value (iter, 4, t)
