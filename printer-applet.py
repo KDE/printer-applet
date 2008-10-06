@@ -749,9 +749,11 @@ class JobManager(QObject):
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
+            self.refresh()
             return
         except RuntimeError:
             return
+        self.refresh()
 
     def on_job_hold_activate(self):
         try:
