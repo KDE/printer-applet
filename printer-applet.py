@@ -271,9 +271,7 @@ class JobManager(QObject):
         self.release = self.rightClickMenu.addAction(i18n("_Release").replace("_",""), self.on_job_release_activate)
         self.reprint = self.rightClickMenu.addAction(i18n("Re_print").replace("_",""), self.on_job_reprint_activate)
 
-        closeAction = KStandardAction.close(self.mainWindow, SLOT("hideMainWindow()"), self.mainWindow.actionCollection());
-        self.connect(closeAction, SIGNAL("triggered(bool)"), self.hideMainWindow)
-        #FIXME PyKDE bug? KStandardAction.close(self.hideMainWindow, self.mainWindow.actionCollection())
+        closeAction = KStandardAction.close(self.hideMainWindow, self.mainWindow.actionCollection());
 
         refreshAction = self.mainWindow.actionCollection().addAction("refresh")
         refreshAction.setIcon( KIcon("view-refresh") )
