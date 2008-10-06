@@ -393,6 +393,7 @@ class JobManager(QObject):
                 self.mainWindow.hide()
             else:
                 self.mainWindow.show()
+                self.refresh()
 
     def on_show_completed_jobs_activate(self, activated):
         if activated:
@@ -762,9 +763,11 @@ class JobManager(QObject):
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
+            self.refresh()
             return
         except RuntimeError:
             return
+        self.refresh()
 
     def on_job_release_activate(self):
         try:
@@ -773,9 +776,11 @@ class JobManager(QObject):
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
+            self.refresh()
             return
         except RuntimeError:
             return
+        self.refresh()
 
     def on_job_reprint_activate(self):
         try:
@@ -784,6 +789,7 @@ class JobManager(QObject):
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
+            self.refresh()
             return
         except RuntimeError:
             return
