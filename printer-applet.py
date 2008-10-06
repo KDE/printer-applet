@@ -234,6 +234,8 @@ class JobManager(QObject):
         self.jobs = {}
         self.jobiters = {}
         self.will_update_job_creation_times = False # whether timeout is set
+        self.update_job_creation_times_timer = QTimer(self)
+        self.connect(self.update_job_creation_times_timer, SIGNAL("timeout()"), self.update_job_creation_times)
         self.statusbar_set = False
         self.reasons_seen = {}
         self.connecting_to_device = {} # dict of printer->time first seen
@@ -548,12 +550,12 @@ class JobManager(QObject):
             iter.setText(4, t)
 
         if need_update and not self.will_update_job_creation_times:
-            #gobject.timeout_add (60 * 1000,
-            #                     self.update_job_creation_times)
-            QTimer.singleShot(60 * 1000, self.update_job_creation_times)
+            self.update_job_creation_times_timer.setInterval(60 * 1000)
+            self.update_job_creation_times_timer.start()
             self.will_update_job_creation_times = True
 
         if not need_update:
+            self.update_job_creation_times_timer.stop()
             self.will_update_job_creation_times = False
 
         # Return code controls whether the timeout will recur.
