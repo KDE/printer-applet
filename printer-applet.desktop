@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Printer Applet
+Name[ar]=بريمج الطباعة
 Name[ca]=Miniaplicació d'impressió
 Name[cs]=Tiskový applet
 Name[da]=Printerapplet
@@ -30,6 +31,7 @@ Name[x-test]=xxPrinter Appletxx
 Name[zh_CN]=打印机小程序
 Name[zh_TW]=印表機小程式
 Comment=System tray icon for managing print jobs
+Comment[ar]=الأيقونة المصغرة لرسائل عمل الطباعة
 Comment[ca]=Icona de la safata del sistema per gestionar els treballs d'impressió
 Comment[cs]=Systémová ikona správy tiskových úloh
 Comment[da]=statusikon til håndtering af udskriftsjob
