@@ -292,13 +292,11 @@ class JobManager(QObject):
         self.mainWindow.createGUI(APPDIR + "/printer-appletui.rc")
 
         cups.setPasswordCB(self.cupsPasswdCallback)
-        print "before: 21222"
+
         dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
-	print "before: "
+
         try:
-            print >> sys.stderr, "%s: printer-applet failed to connect to system D-Bus"
             bus = dbus.SystemBus()
-            print "before: 2122eeeeeeeeee2"
         except:
             print >> sys.stderr, "%s: printer-applet failed to connect to system D-Bus"
             sys.exit (1)
@@ -308,9 +306,8 @@ class JobManager(QObject):
 
         # D-Bus
         bus.add_signal_receiver (self.handle_dbus_signal,
-                                 path="/PrinterSpooler",
-                                 dbus_interface="org.freedesktop.DBus")
-        print "dfffffffffffff"
+                                 path="/com/redhat/PrinterSpooler",
+                                 dbus_interface="com.redhat.PrinterSpooler")
         self.refresh()
 
     """Used in gtk frontend to set magnifing glass icon when configuring printer, I don't have a suitable icon so using bubbles instead
@@ -826,7 +823,7 @@ class JobManager(QObject):
 #### NewPrinterNotification DBus server (the 'new' way).  Note: this interface
 #### is not final yet.
 ####
-PDS_PATH="/NewPrinterNotification"
+PDS_PATH="/com/redhat/NewPrinterNotification"
 PDS_IFACE="com.redhat.NewPrinterNotification"
 PDS_OBJ="com.redhat.NewPrinterNotification"
 class NewPrinterNotification(dbus.service.Object):
@@ -835,13 +832,13 @@ class NewPrinterNotification(dbus.service.Object):
     STATUS_MODEL_MISMATCH = 1
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
-    print "fffffffffffffffffffffff" 
+
     def __init__ (self, bus, jobmanager):
         self.bus = bus
         self.getting_ready = 0
         self.jobmanager = jobmanager
-        #bus_name = dbus.service.BusName (PDS_OBJ, bus=bus)
-        #dbus.service.Object.__init__ (self, bus_name, PDS_PATH)
+        bus_name = dbus.service.BusName (PDS_OBJ, bus=bus)
+        dbus.service.Object.__init__ (self, bus_name, PDS_PATH)
         #self.jobmanager.notify_new_printer ("", i18n("New Printer"), i18n("Configuring New Printer"))
 
     """
@@ -856,7 +853,7 @@ class NewPrinterNotification(dbus.service.Object):
                                     trayicon=trayicon, suppress_icon_hide=True)
     """
     
-    #@dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
+    @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
     def GetReady (self):
         """hal-cups-utils is settings up a new printer"""
         self.jobmanager.notify_new_printer ("", i18n("New Printer"), i18n("Configuring New Printer"))
@@ -885,7 +882,7 @@ class NewPrinterNotification(dbus.service.Object):
     #mdl: PSC 1400 series
     #des:
     #cmd: LDL,MLC,PML,DYN
-    #@dbus.service.method(PDS_IFACE, in_signature='isssss', out_signature='')
+    @dbus.service.method(PDS_IFACE, in_signature='isssss', out_signature='')
     def NewPrinter (self, status, name, mfg, mdl, des, cmd):
         """hal-cups-utils has set up a new printer"""
         """
