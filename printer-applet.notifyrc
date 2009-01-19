@@ -1,0 +1,19 @@
+[Global]
+IconName=printer
+Name=Printer Applet
+Comment=Printer Applet
+
+[Event/New Printer]
+Name=New Printer
+Comment=Configuring New Printer
+Action=Popup
+
+[Event/Printer Added]
+Name=Printer Added
+Comment=Printer Added
+Action=Popup
+
+[Event/Missing Printer Driver]
+Name=Missing Printer Driver
+Comment=Missing Printer Driver
+Action=Popup

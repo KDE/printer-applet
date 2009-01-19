@@ -46,7 +46,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
 from PyKDE4.kdecore import i18n, i18nc, i18np, i18ncp, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs, KLocalizedString
-from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction
+from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction, KNotification
 
 def translate(self, prop):
     """reimplement method from uic to change it to use gettext"""
@@ -321,18 +321,8 @@ class JobManager(QObject):
 
     def notify_new_printer (self, printer, title, text):
         self.hidden = False
-        self.showMessage(title, text)
-
-    def showMessage(self, title, message):
-        """show a message, delayed slightly to ensure the systray is visible else it appears in the wrong place
-        Gtk uses libnotify, for Qt we just show the message directly"""
         self.sysTray.show()
-        self.sysTrayTitle = title
-        self.sysTrayMessage = message
-        QTimer.singleShot(1000, self.showSysTrayMessage)
-
-    def showSysTrayMessage(self):
-        self.sysTray.showMessage(self.sysTrayTitle, self.sysTrayMessage)
+        KNotification.event(title, message, KIcon("konqueror").pixmap(QSize(22,22)))
 
     """unused, see set_special_statusicon
     def set_statusicon_from_pixbuf (self, pb):
@@ -853,7 +843,7 @@ class NewPrinterNotification(dbus.service.Object):
     @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
     def GetReady (self):
         """hal-cups-utils is settings up a new printer"""
-        self.jobmanager.notify_new_printer ("", i18n("New Printer"), i18n("Configuring New Printer"))
+        self.jobmanager.notify_new_printer ("", "New Printer", i18n("Configuring New Printer"))
     """
         self.wake_up ()
         if self.getting_ready == 0:
@@ -902,9 +892,9 @@ class NewPrinterNotification(dbus.service.Object):
         (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
         driver = make + " " + model
         if status < self.STATUS_GENERIC_DRIVER:
-            title = i18n("Printer added")
+            title = "Printer Added"
         else:
-            title = i18n("Missing printer driver")
+            title = "Missing Printer Driver"
 
         if status == self.STATUS_SUCCESS:
             text = i18n("'%1' is ready for printing.", name)
