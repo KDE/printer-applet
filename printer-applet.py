@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 #############################################################################
 ##
@@ -36,8 +37,6 @@ import os
 import subprocess
 import sys
 
-SYSTEM_CONFIG_PRINTER_DIR = "/usr/share/system-config-printer"
-
 MIN_REFRESH_INTERVAL = 1 # seconds
 CONNECTING_TIMEOUT = 60 # seconds
 
@@ -48,11 +47,6 @@ from PyQt4.QtGui import *
 from PyQt4 import uic
 from PyKDE4.kdecore import i18n, i18nc, i18np, i18ncp, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs, KLocalizedString
 from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction
-
-if QFile.exists(SYSTEM_CONFIG_PRINTER_DIR + "/ppds.py"):
-    AUTOCONFIGURE = True
-else:
-    AUTOCONFIGURE = False
 
 def translate(self, prop):
     """reimplement method from uic to change it to use gettext"""
@@ -301,8 +295,11 @@ class JobManager(QObject):
             print >> sys.stderr, "%s: printer-applet failed to connect to system D-Bus"
             sys.exit (1)
 
-        if AUTOCONFIGURE:
+        try:
+            import cupshelpers.ppds
             notification = NewPrinterNotification(bus, self)
+        except ImportError:
+            pass  # cupshelpers not installed, no new printer notification will be shown
 
         # D-Bus
         bus.add_signal_receiver (self.handle_dbus_signal,
@@ -901,8 +898,7 @@ class NewPrinterNotification(dbus.service.Object):
             return
         del c
 
-        sys.path.append (SYSTEM_CONFIG_PRINTER_DIR)
-        from ppds import ppdMakeModelSplit
+        from cupshelpers.ppds import ppdMakeModelSplit
         (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
         driver = make + " " + model
         if status < self.STATUS_GENERIC_DRIVER:
