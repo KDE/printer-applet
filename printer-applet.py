@@ -322,7 +322,7 @@ class JobManager(QObject):
     def notify_new_printer (self, printer, title, text):
         self.hidden = False
         self.sysTray.show()
-        KNotification.event(title, message, KIcon("konqueror").pixmap(QSize(22,22)))
+        KNotification.event(title, text, KIcon("konqueror").pixmap(QSize(22,22)))
 
     """unused, see set_special_statusicon
     def set_statusicon_from_pixbuf (self, pb):
