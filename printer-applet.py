@@ -66,6 +66,8 @@ import dbus
 import dbus.mainloop.qt
 import dbus.service
 
+from statereason import StateReason
+
 class MainWindow(KXmlGuiWindow):
     """Our main GUI dialogue, overridden so that closing it doesn't quit the app"""
 
@@ -84,98 +86,6 @@ class PrintersWindow(QWidget):
         event.ignore()
         self.applet.on_printer_status_delete_event()
         self.hide()
-
-class StateReason:
-    REPORT=1
-    WARNING=2
-    ERROR=3
-
-    LEVEL_ICON={
-        REPORT: "dialog-info",
-        WARNING: "dialog-warning",
-        ERROR: "dialog-error"
-        }
-
-    def __init__(self, printer, reason):
-        self.printer = printer
-        self.reason = reason
-        self.level = None
-        self.canonical_reason = None
-
-    def get_printer (self):
-        return self.printer
-
-    def get_level (self):
-        if self.level != None:
-            return self.level
-
-        if (self.reason.endswith ("-report") or
-            self.reason == "connecting-to-device"):
-            self.level = self.REPORT
-        elif self.reason.endswith ("-warning"):
-            self.level = self.WARNING
-        else:
-            self.level = self.ERROR
-        return self.level
-
-    def get_reason (self):
-        if self.canonical_reason:
-            return self.canonical_reason
-
-        level = self.get_level ()
-        reason = self.reason
-        if level == self.WARNING and reason.endswith ("-warning"):
-            reason = reason[:-8]
-        elif level == self.ERROR and reason.endswith ("-error"):
-            reason = reason[:-6]
-        self.canonical_reason = reason
-        return self.canonical_reason
-
-    def get_description (self):
-        messages = {
-            'toner-low': (i18n("Toner low"),
-                          ki18n("Printer '%1' is low on toner.")),
-            'toner-empty': (i18n("Toner empty"),
-                            ki18n("Printer '%1' has no toner left.")),
-            'cover-open': (i18n("Cover open"),
-                           ki18n("The cover is open on printer '%1'.")),
-            'door-open': (i18n("Door open"),
-                          ki18n("The door is open on printer '%1'.")),
-            'media-low': (i18n("Paper low"),
-                          ki18n("Printer '%1' is low on paper.")),
-            'media-empty': (i18n("Out of paper"),
-                            ki18n("Printer '%1' is out of paper.")),
-            'marker-supply-low': (i18n("Ink low"),
-                                  ki18n("Printer '%1' is low on ink.")),
-            'marker-supply-empty': (i18n("Ink empty"),
-                                    ki18n("Printer '%1' has no ink left.")),
-            'connecting-to-device': (i18n("Not connected?"),
-                                     ki18n("Printer '%1' may not be connected.")),
-            }
-        try:
-            (title, text) = messages[self.get_reason ()]
-            text = text.subs (self.get_printer ()).toString ()
-        except KeyError:
-            if self.get_level () == self.REPORT:
-                title = i18n("Printer report")
-            elif self.get_level () == self.WARNING:
-                title = i18n("Printer warning")
-            elif self.get_level () == self.ERROR:
-                title = i18n("Printer error")
-            text = i18n("Printer '%1': '%2'.", self.get_printer (), self.get_reason ())
-        return (title, text)
-
-    def get_tuple (self):
-        return (self.get_level (), self.get_printer (), self.get_reason ())
-
-    def __cmp__(self, other):
-        if other == None:
-            return 1
-        if other.get_level () != self.get_level ():
-            return self.get_level () < other.get_level ()
-        if other.get_printer () != self.get_printer ():
-            return other.get_printer () < self.get_printer ()
-        return other.get_reason () < self.get_reason ()
 
 def collect_printer_state_reasons (connection):
     result = []

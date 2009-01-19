@@ -29,6 +29,7 @@ IF(INSTALL_PRINTER_APPLET)
         printer-applet.py
         printer-applet.ui
         printer-appletui.rc
+        statereason.py
         DESTINATION ${DATA_INSTALL_DIR}/printer-applet )
     PYKDE4_ADD_EXECUTABLE(printer-applet.py printer-applet)
     install(FILES printer-applet.desktop DESTINATION ${AUTOSTART_INSTALL_DIR})
