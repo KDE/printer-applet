@@ -15,10 +15,10 @@ PyKDE4: http://www.riverbankcomputing.co.uk/pykde/ or kdebindings
 
 python-cups:  http://cyberelk.net/tim/software/pycups/
 
-hal-cups-utils:  svn co http://svn.fedorahosted.org/svn/hal-cups-utils/trunk/
+hal-cups-utils:  https://fedorahosted.org/hal-cups-utils/
 
 hal-cups-utils needs the common parts of system-config-printer (cupshelpers/*, ppds.py, probe_printer.py):
-svn co http://svn.fedorahosted.org/svn/system-config-printer/trunk
+http://cyberelk.net/tim/software/system-config-printer/
 
 Note to packagers: system-config-printer is a Gnome app, please split
 out the parts needed by printer-applet (and kdeadmin's

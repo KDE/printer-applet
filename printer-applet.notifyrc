@@ -17,3 +17,8 @@ Action=Popup
 Name=Missing Printer Driver
 Comment=Missing Printer Driver
 Action=Popup
+
+[Event/Other]
+Name=Other
+Comment=Other
+Action=Popup

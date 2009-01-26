@@ -25,6 +25,8 @@
 ##
 #############################################################################
 
+from PyKDE4.kdecore import i18n, ki18n
+
 class StateReason:
     """Holds problem information for a printer and can be ordered for priority 
     by comparing with another instance"""

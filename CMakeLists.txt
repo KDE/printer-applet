@@ -29,7 +29,11 @@ IF(INSTALL_PRINTER_APPLET)
         printer-applet.py
         printer-applet.ui
         printer-appletui.rc
+        printer-applet.notifyrc
         statereason.py
+        monitor.py
+        authconn.py
+        debug.py
         DESTINATION ${DATA_INSTALL_DIR}/printer-applet )
     PYKDE4_ADD_EXECUTABLE(printer-applet.py printer-applet)
     install(FILES printer-applet.desktop DESTINATION ${AUTOSTART_INSTALL_DIR})
@@ -37,5 +41,5 @@ ENDIF(INSTALL_PRINTER_APPLET)
 
 find_package(SystemConfigPrinter)
 IF(NOT SYSTEMCONFIGPRINTER_FOUND)
-    macro_log_feature(SYSTEMCONFIGPRINTER_FOUND "system-config-printer" "system-config-printer was not found.  Some of its modules (cupshelpers.py and ppds.py) are optionally used by printer-applet for auto configure of new printers.  You should also install hal-cups-utils <svn co http://svn.fedorahosted.org/svn/hal-cups-utils/trunk/>" "http://cyberelk.net/tim/software/system-config-printer/" FALSE)
+    macro_log_feature(SYSTEMCONFIGPRINTER_FOUND "system-config-printer" "system-config-printer was not found.  Some of its modules (cupshelpers.py and ppds.py) are optionally used by printer-applet for auto configure of new printers.  You should also install hal-cups-utils <https://fedorahosted.org/hal-cups-utils/>" "http://cyberelk.net/tim/software/system-config-printer/" FALSE)
 ENDIF(NOT SYSTEMCONFIGPRINTER_FOUND)

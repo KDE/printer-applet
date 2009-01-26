@@ -13,20 +13,12 @@
    <string>Document Print Status</string>
   </property>
   <property name="windowIcon" >
-   <iconset>printer-128.png</iconset>
+   <iconset>
+    <normaloff>printer-128.png</normaloff>printer-128.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
-    <property name="leftMargin" >
-     <number>0</number>
-    </property>
-    <property name="topMargin" >
-     <number>0</number>
-    </property>
-    <property name="rightMargin" >
-     <number>0</number>
-    </property>
-    <property name="bottomMargin" >
+    <property name="margin" >
      <number>0</number>
     </property>
     <item row="0" column="0" >
@@ -46,6 +38,11 @@
       <column>
        <property name="text" >
         <string>Job</string>
+       </property>
+      </column>
+      <column>
+       <property name="text" >
+        <string>User</string>
        </property>
       </column>
       <column>
@@ -83,7 +80,7 @@
      <x>0</x>
      <y>0</y>
      <width>894</width>
-     <height>30</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile" >
@@ -112,7 +109,8 @@
   </action>
   <action name="actionRefresh_2" >
    <property name="icon" >
-    <iconset>view-refresh.png</iconset>
+    <iconset>
+     <normaloff>view-refresh.png</normaloff>view-refresh.png</iconset>
    </property>
    <property name="text" >
     <string>Refresh</string>
@@ -128,7 +126,8 @@
   </action>
   <action name="actionClose" >
    <property name="icon" >
-    <iconset>window-close.png</iconset>
+    <iconset>
+     <normaloff>window-close.png</normaloff>window-close.png</iconset>
    </property>
    <property name="text" >
     <string>Close</string>
