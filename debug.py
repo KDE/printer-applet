@@ -20,7 +20,7 @@
 import sys
 import traceback
 
-_debug=True
+_debug=False
 def debugprint (x):
     if _debug:
         try:
