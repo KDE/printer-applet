@@ -1,6 +1,39 @@
 [Global]
 IconName=printer
 Name=Printer Applet
+Name[ar]=بريمج الطباعة
+Name[ca]=Miniaplicació d'impressió
+Name[cs]=Tiskový applet
+Name[da]=Printerapplet
+Name[de]=Drucker-Miniprogramm
+Name[el]=Μικροεφαρμογή εκτυπωτή
+Name[es]=Miniaplicación de impresora
+Name[et]=Trükkimisaplett
+Name[eu]=Inprimagailu appleta
+Name[fr]=Applet d'imprimante
+Name[ga]=Feidhmchláirín Printéara
+Name[gl]=Applet de impresora
+Name[it]=Applet di stampa
+Name[ja]=プリンタアプレット
+Name[km]=អាប់ភ្លេត​ម៉ាស៊ីន​បោះពុម្ព
+Name[ko]=프린터 애플릿
+Name[lv]=Drukas sīkrīks
+Name[nb]=Miniprogram for utskrift
+Name[nds]=Drucker-Lüttprogram
+Name[pa]=ਪਰਿੰਟਰ ਐਪਲਿਟ
+Name[pl]=Aplet drukarki
+Name[pt]='Applet' de Impressoras
+Name[pt_BR]=Miniaplicativo de impressora
+Name[ro]=Miniaplicație Imprimantă
+Name[ru]=Апплет принтера
+Name[sl]=Nadzorovalnik tiskanja
+Name[sv]=Skrivarminiprogram
+Name[th]=แอพเพล็ตเครื่องพิมพ์
+Name[tr]=Yazıcı Programcığı
+Name[uk]=Аплет принтера
+Name[x-test]=xxPrinter Appletxx
+Name[zh_CN]=打印机小程序
+Name[zh_TW]=印表機小程式
 Comment=Printer Applet
 
 [Event/New Printer]
