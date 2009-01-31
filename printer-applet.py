@@ -482,7 +482,7 @@ class JobManager(QObject, monitor.Watcher):
                 pass
 
         if state == None:
-            state = _("Unknown")
+            state = i18n("Unknown")
         iter.setText(6, state)
 
         """FIXME TODO
@@ -498,8 +498,8 @@ class JobManager(QObject, monitor.Watcher):
                                 "authenticateJob() not available")
                     return
 
-                title = _("Authentication Required")
-                text = _("Job requires authentication to proceed.")
+                title = i18n("Authentication Required")
+                text = i18n("Job requires authentication to proceed.")
                 notification = pynotify.Notification (title, text, 'printer')
                 notification.set_data ('job-id', job)
                 notification.set_urgency (pynotify.URGENCY_NORMAL)
@@ -508,7 +508,7 @@ class JobManager(QObject, monitor.Watcher):
                                       self.on_auth_notification_closed)
                 self.set_statusicon_visibility ()
                 notification.attach_to_status_icon (self.statusicon)
-                notification.add_action ("authenticate", _("Authenticate"),
+                notification.add_action ("authenticate", i18n("Authenticate"),
                                          self.on_auth_notification_authenticate)
                 notification.show ()
                 self.auth_notifications[job] = notification
@@ -886,8 +886,8 @@ class JobManager(QObject, monitor.Watcher):
                     if event['printer-state'] == cups.IPP_PRINTER_STOPPED:
                         name = event['printer-name']
                         markup += ' '
-                        markup += (_("The printer called `%s' has "
-                                     "been disabled.") % name)
+                        markup += i18n("The printer called `%1' has "
+                                       "been disabled.", name)
                 except KeyError:
                     pass
 
