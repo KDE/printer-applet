@@ -652,10 +652,8 @@ class JobManager(QObject, monitor.Watcher):
             num_jobs = len (self.jobs)
             if num_jobs == 0:
                 tooltip = i18n("No documents queued")
-            elif num_jobs == 1:
-                tooltip = i18n("1 document queued")
-            else:
-                tooltip = i18n("%1 documents queued", num_jobs)
+            else
+                tooltip = i18np("1 document queued", "%1 documents queued", num_jobs)
 
         self.sysTray.setToolTip(tooltip)
 
