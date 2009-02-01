@@ -35,32 +35,68 @@ Name[x-test]=xxPrinter Appletxx
 Name[zh_CN]=打印机小程序
 Name[zh_TW]=印表機小程式
 Comment=Printer Applet
+Comment[ga]=Feidhmchláirín Printéara
+Comment[pt]='Applet' de Impressoras
 Comment[pt_BR]=Miniaplicativo de impressora
+Comment[sv]=Skrivarminiprogram
+Comment[uk]=Аплет принтера
 
 [Event/New Printer]
 Name=New Printer
+Name[ga]=Printéir Nua
+Name[pt]=Nova Impressora
 Name[pt_BR]=Nova impressora
+Name[sv]=Ny skrivare
+Name[uk]=Новий принтер
 Comment=Configuring New Printer
+Comment[ga]=Printéir Nua á Chumrú
+Comment[pt]=A Configurar a Impressora Nova
 Comment[pt_BR]=Configurando nova impressora
+Comment[sv]=Anpassar ny skrivare
+Comment[uk]=Налаштування нового принтера
 Action=Popup
 
 [Event/Printer Added]
 Name=Printer Added
+Name[ga]=Cuireadh Printéir Leis
+Name[pt]=Impressora Adicionada
 Name[pt_BR]=Impressora adicionada
+Name[sv]=Skrivare tillagd
+Name[uk]=Додано принтер
 Comment=Printer Added
+Comment[ga]=Cuireadh Printéir Leis
+Comment[pt]=Impressora Adicionada
 Comment[pt_BR]=Impressora adicionada
+Comment[sv]=Skrivare tillagd
+Comment[uk]=Додано принтер
 Action=Popup
 
 [Event/Missing Printer Driver]
 Name=Missing Printer Driver
+Name[ga]=Tiománaí Printéara Ar Iarraidh
+Name[pt]=Falta o Controlador da Impressora
 Name[pt_BR]=Falta o driver da impressora
+Name[sv]=Saknar drivrutin för skrivare
+Name[uk]=Немає драйвера принтера
 Comment=Missing Printer Driver
+Comment[ga]=Tiománaí Printéara Ar Iarraidh
+Comment[pt]=Falta o Controlador da Impressora
 Comment[pt_BR]=Falta o driver da impressora
+Comment[sv]=Saknar drivrutin för skrivare
+Comment[uk]=Немає драйвера принтера
 Action=Popup
 
 [Event/Other]
 Name=Other
+Name[ga]=Eile
+Name[pt]=Outra
 Name[pt_BR]=Outros
+Name[sv]=Annan
+Name[uk]=Інше
 Comment=Other
+Comment[ga]=Eile
+Comment[pt]=Outra
 Comment[pt_BR]=Outros
+Comment[sv]=Annan
+Comment[uk]=Інше
 Action=Popup
