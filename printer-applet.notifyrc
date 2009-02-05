@@ -41,6 +41,7 @@ Comment[pt]='Applet' de Impressoras
 Comment[pt_BR]=Miniaplicativo de impressora
 Comment[sv]=Skrivarminiprogram
 Comment[uk]=Аплет принтера
+Comment[x-test]=xxPrinter Appletxx
 
 [Event/New Printer]
 Name=New Printer
@@ -50,6 +51,7 @@ Name[pt]=Nova Impressora
 Name[pt_BR]=Nova impressora
 Name[sv]=Ny skrivare
 Name[uk]=Новий принтер
+Name[x-test]=xxNew Printerxx
 Comment=Configuring New Printer
 Comment[et]=Uue printeri seadistamine
 Comment[ga]=Printéir Nua á Chumrú
@@ -57,6 +59,7 @@ Comment[pt]=A Configurar a Impressora Nova
 Comment[pt_BR]=Configurando nova impressora
 Comment[sv]=Anpassar ny skrivare
 Comment[uk]=Налаштування нового принтера
+Comment[x-test]=xxConfiguring New Printerxx
 Action=Popup
 
 [Event/Printer Added]
@@ -67,6 +70,7 @@ Name[pt]=Impressora Adicionada
 Name[pt_BR]=Impressora adicionada
 Name[sv]=Skrivare tillagd
 Name[uk]=Додано принтер
+Name[x-test]=xxPrinter Addedxx
 Comment=Printer Added
 Comment[et]=Printer on lisatud
 Comment[ga]=Cuireadh Printéir Leis
@@ -74,6 +78,7 @@ Comment[pt]=Impressora Adicionada
 Comment[pt_BR]=Impressora adicionada
 Comment[sv]=Skrivare tillagd
 Comment[uk]=Додано принтер
+Comment[x-test]=xxPrinter Addedxx
 Action=Popup
 
 [Event/Missing Printer Driver]
@@ -84,6 +89,7 @@ Name[pt]=Falta o Controlador da Impressora
 Name[pt_BR]=Falta o driver da impressora
 Name[sv]=Saknar drivrutin för skrivare
 Name[uk]=Немає драйвера принтера
+Name[x-test]=xxMissing Printer Driverxx
 Comment=Missing Printer Driver
 Comment[et]=Printeri draiver puudub
 Comment[ga]=Tiománaí Printéara Ar Iarraidh
@@ -91,6 +97,7 @@ Comment[pt]=Falta o Controlador da Impressora
 Comment[pt_BR]=Falta o driver da impressora
 Comment[sv]=Saknar drivrutin för skrivare
 Comment[uk]=Немає драйвера принтера
+Comment[x-test]=xxMissing Printer Driverxx
 Action=Popup
 
 [Event/Other]
@@ -101,6 +108,7 @@ Name[pt]=Outra
 Name[pt_BR]=Outros
 Name[sv]=Annan
 Name[uk]=Інше
+Name[x-test]=xxOtherxx
 Comment=Other
 Comment[et]=Muu
 Comment[ga]=Eile
@@ -108,4 +116,5 @@ Comment[pt]=Outra
 Comment[pt_BR]=Outros
 Comment[sv]=Annan
 Comment[uk]=Інше
+Comment[x-test]=xxOtherxx
 Action=Popup
