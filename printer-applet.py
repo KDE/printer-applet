@@ -469,13 +469,13 @@ class JobManager(QObject, monitor.Watcher):
                 if job_requires_auth:
                     state = i18n("Held for authentication")
                 else:
-                    state = { cups.IPP_JOB_PENDING: i18n("Pending"),
-                              cups.IPP_JOB_HELD: i18n("Held"),
-                              cups.IPP_JOB_PROCESSING: i18n("Processing"),
-                              cups.IPP_JOB_STOPPED: i18n("Stopped"),
-                              cups.IPP_JOB_CANCELED: i18n("Canceled"),
-                              cups.IPP_JOB_ABORTED: i18n("Aborted"),
-                              cups.IPP_JOB_COMPLETED: i18n("Completed") }[s]
+                    state = { cups.IPP_JOB_PENDING: i18nc("Job state", "Pending"),
+                              cups.IPP_JOB_HELD: i18nc("Job state", "Held"),
+                              cups.IPP_JOB_PROCESSING: i18nc("Job state", "Processing"),
+                              cups.IPP_JOB_STOPPED: i18nc("Job state", "Stopped"),
+                              cups.IPP_JOB_CANCELED: i18nc("Job state", "Canceled"),
+                              cups.IPP_JOB_ABORTED: i18nc("Job state", "Aborted"),
+                              cups.IPP_JOB_COMPLETED: i18nc("Job state", "Completed") }[s]
             except ValueError:
                 pass
             except IndexError:
