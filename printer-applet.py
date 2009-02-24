@@ -467,7 +467,7 @@ class JobManager(QObject, monitor.Watcher):
                                      data.get ('job-hold-until', 'none') ==
                                      'auth-info-required')
                 if job_requires_auth:
-                    state = i18n("Held for authentication")
+                    state = i18nc("Job state", "Held for authentication")
                 else:
                     state = { cups.IPP_JOB_PENDING: i18nc("Job state", "Pending"),
                               cups.IPP_JOB_HELD: i18nc("Job state", "Held"),
@@ -482,7 +482,7 @@ class JobManager(QObject, monitor.Watcher):
                 pass
 
         if state == None:
-            state = i18n("Unknown")
+            state = i18nc("Job state", "Unknown")
         iter.setText(6, state)
 
         """FIXME TODO
