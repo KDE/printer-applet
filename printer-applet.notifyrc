@@ -36,6 +36,7 @@ Name[x-test]=xxPrinter Appletxx
 Name[zh_CN]=打印机小程序
 Name[zh_TW]=印表機小程式
 Comment=Printer Applet
+Comment[es]=Miniaplicación de impresora
 Comment[et]=Trükkimisaplett
 Comment[eu]=Inprimagailu appleta
 Comment[ga]=Feidhmchláirín Printéara
@@ -50,6 +51,7 @@ Comment[zh_TW]=印表機小程式
 
 [Event/New Printer]
 Name=New Printer
+Name[es]=Nueva impresora
 Name[et]=Uus printer
 Name[eu]=Inprimagailu berria
 Name[ga]=Printéir Nua
@@ -62,6 +64,7 @@ Name[uk]=Новий принтер
 Name[x-test]=xxNew Printerxx
 Name[zh_TW]=新增印表機
 Comment=Configuring New Printer
+Comment[es]=Configuración de la nueva impresora
 Comment[et]=Uue printeri seadistamine
 Comment[eu]=Inprimagailu berria konfiguratzen
 Comment[ga]=Printéir Nua á Chumrú
@@ -77,6 +80,7 @@ Action=Popup
 
 [Event/Printer Added]
 Name=Printer Added
+Name[es]=Impresora añadida
 Name[et]=Printer on lisatud
 Name[eu]=Inprimagailua erantsita
 Name[ga]=Cuireadh Printéir Leis
@@ -89,6 +93,7 @@ Name[uk]=Додано принтер
 Name[x-test]=xxPrinter Addedxx
 Name[zh_TW]=已新增印表機
 Comment=Printer Added
+Comment[es]=Impresora añadida
 Comment[et]=Printer on lisatud
 Comment[eu]=Inprimagailua erantsita
 Comment[ga]=Cuireadh Printéir Leis
@@ -104,6 +109,7 @@ Action=Popup
 
 [Event/Missing Printer Driver]
 Name=Missing Printer Driver
+Name[es]=Falta el controlador de la impresora
 Name[et]=Printeri draiver puudub
 Name[eu]=Inprimagailuaren gidaria falta da
 Name[ga]=Tiománaí Printéara Ar Iarraidh
@@ -116,6 +122,7 @@ Name[uk]=Немає драйвера принтера
 Name[x-test]=xxMissing Printer Driverxx
 Name[zh_TW]=遺失印表機驅動程式
 Comment=Missing Printer Driver
+Comment[es]=Falta el controlador de la impresora
 Comment[et]=Printeri draiver puudub
 Comment[eu]=Inprimagailuaren gidaria falta da
 Comment[ga]=Tiománaí Printéara Ar Iarraidh
@@ -131,6 +138,7 @@ Action=Popup
 
 [Event/Other]
 Name=Other
+Name[es]=Otros
 Name[et]=Muu
 Name[eu]=Beste bat
 Name[ga]=Eile
@@ -143,6 +151,7 @@ Name[uk]=Інше
 Name[x-test]=xxOtherxx
 Name[zh_TW]=其他
 Comment=Other
+Comment[es]=Otros
 Comment[et]=Muu
 Comment[eu]=Beste bat
 Comment[ga]=Eile
