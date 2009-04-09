@@ -215,6 +215,7 @@ class JobManager(QObject, monitor.Watcher):
 
         self.trayicon = True
         self.suppress_icon_hide = False
+        self.stopped_job_prompts = set() # of job IDs
         self.printer_state_reasons = {}
         self.num_jobs_when_hidden = 0
         self.jobs = {}
