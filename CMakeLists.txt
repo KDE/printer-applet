@@ -11,7 +11,7 @@ ENDIF(NOT PYQT4_FOUND)
 
 find_package(PyKDE4)
 IF(NOT PYKDE4_FOUND)
-    macro_log_feature(PYKDE_FOUND "PyKDE" "PyKDE was not found.  It is needed by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://websvn.kde.org/trunk/KDE/kdebindings/python/pykde4/" FALSE)
+    macro_log_feature(PYKDE4_FOUND "PyKDE4" "PyKDE4 was not found.  It is needed by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://websvn.kde.org/trunk/KDE/kdebindings/python/pykde4/" FALSE)
 ENDIF(NOT PYKDE4_FOUND)
 
 find_package(PyCups)
