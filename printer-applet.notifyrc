@@ -60,6 +60,7 @@ Comment[zh_TW]=印表機小程式
 
 [Event/New Printer]
 Name=New Printer
+Name[de]=Neuer Drucker
 Name[es]=Nueva impresora
 Name[et]=Uus printer
 Name[eu]=Inprimagailu berria
