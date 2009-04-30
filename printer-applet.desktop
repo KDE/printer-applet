@@ -80,3 +80,4 @@ Terminal=false
 Type=Application
 Icon=printer
 OnlyShowIn=KDE;
+X-KDE-autostart-phase=2
