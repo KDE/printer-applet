@@ -118,6 +118,7 @@ Action=Popup
 
 [Event/Printer Added]
 Name=Printer Added
+Name[de]=Drucker hinzugefügt
 Name[el]=Προστέθηκε εκτυπωτής
 Name[es]=Impresora añadida
 Name[et]=Printer on lisatud
