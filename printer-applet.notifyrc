@@ -41,6 +41,7 @@ Name[x-test]=xxPrinter Appletxx
 Name[zh_CN]=打印机小程序
 Name[zh_TW]=印表機小程式
 Comment=Printer Applet
+Comment[da]=Printer-applet
 Comment[de]=Drucker-Miniprogramm
 Comment[el]=Μικροεφαρμογή εκτυπωτή
 Comment[es]=Miniaplicación de impresora
@@ -67,6 +68,7 @@ Comment[zh_TW]=印表機小程式
 
 [Event/New Printer]
 Name=New Printer
+Name[da]=Ny printer
 Name[de]=Neuer Drucker
 Name[el]=Νέος εκτυπωτής
 Name[es]=Nueva impresora
@@ -91,6 +93,7 @@ Name[x-test]=xxNew Printerxx
 Name[zh_CN]=新打印机
 Name[zh_TW]=新增印表機
 Comment=Configuring New Printer
+Comment[da]=Indstilling af ny printer
 Comment[de]=Neuen Drucker einrichten
 Comment[el]=Ρύθμιση νέου εκτυπωτή
 Comment[es]=Configuración de la nueva impresora
@@ -118,6 +121,7 @@ Action=Popup
 
 [Event/Printer Added]
 Name=Printer Added
+Name[da]=Printer tilføjet
 Name[de]=Drucker hinzugefügt
 Name[el]=Προστέθηκε εκτυπωτής
 Name[es]=Impresora añadida
@@ -142,6 +146,7 @@ Name[x-test]=xxPrinter Addedxx
 Name[zh_CN]=已添加打印机
 Name[zh_TW]=已新增印表機
 Comment=Printer Added
+Comment[da]=Printer tilføjet
 Comment[de]=Drucker hinzugefügt
 Comment[el]=Προστέθηκε εκτυπωτής
 Comment[es]=Impresora añadida
@@ -169,6 +174,7 @@ Action=Popup
 
 [Event/Missing Printer Driver]
 Name=Missing Printer Driver
+Name[da]=Manglende printerdriver
 Name[de]=Fehlender Druckertreiber
 Name[el]=Λείπει οδηγός εκτυπωτή
 Name[es]=Falta el controlador de la impresora
@@ -193,6 +199,7 @@ Name[x-test]=xxMissing Printer Driverxx
 Name[zh_CN]=缺失打印机驱动
 Name[zh_TW]=遺失印表機驅動程式
 Comment=Missing Printer Driver
+Comment[da]=Manglende printerdriver
 Comment[de]=Fehlender Druckertreiber
 Comment[el]=Λείπει οδηγός εκτυπωτή
 Comment[es]=Falta el controlador de la impresora
@@ -220,6 +227,7 @@ Action=Popup
 
 [Event/Other]
 Name=Other
+Name[da]=Andet
 Name[de]=Andere
 Name[el]=Άλλο
 Name[es]=Otros
@@ -244,6 +252,7 @@ Name[x-test]=xxOtherxx
 Name[zh_CN]=其它
 Name[zh_TW]=其他
 Comment=Other
+Comment[da]=Andet
 Comment[de]=Andere
 Comment[el]=Άλλο
 Comment[es]=Otros
