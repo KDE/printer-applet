@@ -1138,10 +1138,9 @@ if __name__ == "__main__":
     copyright   = ki18n("2007-2008 Canonical Ltd")
     text        = KLocalizedString()
     homePage    = "http://utils.kde.org/projects/printer-applet"
-    bugEmail    = ""
 
     aboutData   = KAboutData (appName, catalogue, programName, version, description,
-                                license, copyright, text, homePage, bugEmail)
+                                license, copyright, text, homePage)
 
     aboutData.addAuthor(ki18n("Jonathan Riddell"), ki18n("Author"))
     aboutData.addAuthor(ki18n("Tim Waugh/Red Hat"), ki18n("System Config Printer Author"))
