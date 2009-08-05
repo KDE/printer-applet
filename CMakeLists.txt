@@ -41,5 +41,5 @@ ENDIF(INSTALL_PRINTER_APPLET)
 
 find_package(SystemConfigPrinter)
 IF(NOT SYSTEMCONFIGPRINTER_FOUND)
-    macro_log_feature(SYSTEMCONFIGPRINTER_FOUND "system-config-printer" "system-config-printer was not found.  Some of its modules (cupshelpers.py and ppds.py) are optionally used by printer-applet for auto configure of new printers.  You should also install hal-cups-utils <https://fedorahosted.org/hal-cups-utils/>" "http://cyberelk.net/tim/software/system-config-printer/" FALSE)
+    macro_log_feature(SYSTEMCONFIGPRINTER_FOUND "system-config-printer" "system-config-printer was not found.  Some of its modules (cupshelpers.py and ppds.py) are optionally used by printer-applet for auto configure of new printers.  You should also install the udev rules from system-config-printer." "http://cyberelk.net/tim/software/system-config-printer/" FALSE)
 ENDIF(NOT SYSTEMCONFIGPRINTER_FOUND)
