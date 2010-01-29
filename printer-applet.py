@@ -893,7 +893,7 @@ class JobManager(QObject, monitor.Watcher):
                     pass
 
                 self.stopped_job_prompts.add (jobid)
-                result = KMessageBox.warning(self.mainWindow, markup, i18n("Print Error"))
+                result = KMessageBox.sorry(self.mainWindow, markup, i18n("Print Error"))
                 #FIXME GTK version asks a question here but we don't have troubleshooter anyway
                 #self.print_error_dialog_response(result, jobid)
 
