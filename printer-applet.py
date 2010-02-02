@@ -253,9 +253,9 @@ class JobManager(QObject, monitor.Watcher):
         #self.connect(self.mainWindow.treeWidget, SIGNAL("itemClicked(QTreeWidgetItem*, int)"), self.printItemClicked)
         self.rightClickMenu = KMenu(self.mainWindow.treeWidget)
         self.cancel = self.rightClickMenu.addAction(i18n("Cancel"), self.on_job_cancel_activate)
-        self.hold = self.rightClickMenu.addAction(i18n("_Hold").replace("_",""), self.on_job_hold_activate)
-        self.release = self.rightClickMenu.addAction(i18n("_Release").replace("_",""), self.on_job_release_activate)
-        self.reprint = self.rightClickMenu.addAction(i18n("Re_print").replace("_",""), self.on_job_reprint_activate)
+        self.hold = self.rightClickMenu.addAction(i18n("_Hold").remove('_'), self.on_job_hold_activate)
+        self.release = self.rightClickMenu.addAction(i18n("_Release").remove('_'), self.on_job_release_activate)
+        self.reprint = self.rightClickMenu.addAction(i18n("Re_print").remove('_'), self.on_job_reprint_activate)
 
         closeAction = KStandardAction.close(self.hideMainWindow, self.mainWindow.actionCollection());
 
