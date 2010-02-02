@@ -182,11 +182,11 @@ def collect_printer_state_reasons (connection):
         for reason in reasons:
             if reason == "none":
                 break
-            if (reason.startswith ("moving-to-paused") or
-                reason.startswith ("paused") or
-                reason.startswith ("shutdown") or
-                reason.startswith ("stopping") or
-                reason.startswith ("stopped-partly")):
+            if (reason.startswith(QLatin1String("moving-to-paused")) or
+                reason.startswith(QLatin1String("paused")) or
+                reason.startswith(QLatin1String("shutdown")) or
+                reason.startswith(QLatin1String("stopping")) or
+                reason.startswith(QLatin1String("stopped-partly"))):
                 continue
             result.append (StateReason (name, reason))
     return result
@@ -234,13 +234,13 @@ class JobManager(QObject, monitor.Watcher):
             APPDIR = QDir.currentPath()
         else:
             file =  KStandardDirs.locate("appdata", "printer-applet.ui")
-            APPDIR = file.left(file.lastIndexOf("/"))
+            APPDIR = file.left(file.lastIndexOf('/'))
 
         self.mainWindow = MainWindow()
-        uic.loadUi(APPDIR + "/" + "printer-applet.ui", self.mainWindow)
+        uic.loadUi(APPDIR + '/' + "printer-applet.ui", self.mainWindow)
 
         self.printersWindow = PrintersWindow(self)
-        uic.loadUi(APPDIR + "/" + "printer-applet-printers.ui", self.printersWindow)
+        uic.loadUi(APPDIR + '/' + "printer-applet-printers.ui", self.printersWindow)
 
         self.sysTray = KStatusNotifierItem(self.mainWindow)
         self.sysTray.setCategory(KStatusNotifierItem.Hardware)
@@ -351,7 +351,7 @@ class JobManager(QObject, monitor.Watcher):
         error_text = error_text.replace("\n", "<br />")
         error_text = error_text.replace("span", "strong")
         KMessageBox.error(self.mainWindow, error_text, i18n("Error"))
-    
+
     #FIXME, hide printer status window?
     def hideMainWindow(self):
         self.mainWindow.hide()
@@ -902,7 +902,7 @@ class JobManager(QObject, monitor.Watcher):
 
         (title, text) = reason.get_description ()
         printer = reason.get_printer ()
-        
+
         iter = QTreeWidgetItem(self.printersWindow.treeWidget)
         iter.setText(0, reason.get_printer ())
         iter.setText(1, printer)
