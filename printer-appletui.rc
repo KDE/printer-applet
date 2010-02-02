@@ -6,5 +6,8 @@
     <Action name="show_completed_jobs"/>
     <Action name="show_printer_status"/>
   </Menu>
+    <Menu name="settings"><text>&amp;Settings</text>
+    <Action name="printer_configuration"/>
+  </Menu>
 </MenuBar>
 </kpartgui>

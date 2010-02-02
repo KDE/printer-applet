@@ -40,10 +40,10 @@ import sys
 import time
 
 from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtGui import QWidget, QKeySequence, QHeaderView, QTreeWidgetItem
 from PyQt4 import uic
-from PyKDE4.kdecore import i18n, i18nc, i18np, i18ncp, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs, KLocalizedString
-from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction, KNotification, KMenu, KMessageBox, KStatusNotifierItem
+from PyKDE4.kdecore import i18n, i18nc, i18np, i18ncp, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs, KLocalizedString, KToolInvocation
+from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KAction, KToggleAction, KNotification, KMenu, KMessageBox, KStatusNotifierItem
 
 def translate(self, prop):
     """reimplement method from uic to change it to use gettext"""
@@ -265,6 +265,12 @@ class JobManager(QObject, monitor.Watcher):
         refreshAction.setShortcut(QKeySequence(Qt.Key_F5))
         self.connect(refreshAction, SIGNAL("triggered(bool)"), self.on_refresh_activate);
 
+        configureAction = KAction("Printer Configuration", self.mainWindow)
+        configureAction.setText(i18n("Printer Configuration..."))
+        configureAction.setIcon(KIcon("configure"))
+        self.mainWindow.actionCollection().addAction("printer_configuration", configureAction)
+        self.connect(configureAction, SIGNAL("triggered(bool)"), self.on_printer_configuration_activate)
+
         showCompletedJobsAction = KToggleAction("Show Completed Jobs", self.mainWindow)
         self.mainWindow.actionCollection().addAction("show_completed_jobs", showCompletedJobsAction)
         self.connect(showCompletedJobsAction, SIGNAL("triggered(bool)"), self.on_show_completed_jobs_activate);
@@ -272,7 +278,7 @@ class JobManager(QObject, monitor.Watcher):
         showPrinterStatusAction = KToggleAction("Show Printer Status", self.mainWindow)
         self.mainWindow.actionCollection().addAction("show_printer_status", showPrinterStatusAction)
         self.connect(showPrinterStatusAction, SIGNAL("triggered(bool)"), self.on_show_printer_status_activate);
-        
+
         self.mainWindow.treeWidget.header().setResizeMode(QHeaderView.ResizeToContents)
         self.printersWindow.treeWidget.header().setResizeMode(QHeaderView.ResizeToContents)
 
@@ -368,6 +374,9 @@ class JobManager(QObject, monitor.Watcher):
             self.printersWindow.show()
         else:
             self.printersWindow.hide()
+
+    def on_printer_configuration_activate(self, activated):
+        KToolInvocation.startServiceByDesktopName("system-config-printer-kde")
 
     """not using notifications in qt frontend
     def on_notification_closed(self, notify):
