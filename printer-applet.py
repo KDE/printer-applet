@@ -40,7 +40,7 @@ import sys
 import time
 
 from PyQt4.QtCore import *
-from PyQt4.QtGui import QWidget, QKeySequence, QHeaderView, QTreeWidgetItem
+from PyQt4.QtGui import QWidget, QKeySequence, QHeaderView, QTreeWidgetItem, QCursor
 from PyQt4 import uic
 from PyKDE4.kdecore import i18n, i18nc, i18np, i18ncp, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs, KLocalizedString, KToolInvocation
 from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KAction, KToggleAction, KNotification, KMenu, KMessageBox, KStatusNotifierItem
@@ -244,7 +244,6 @@ class JobManager(QObject, monitor.Watcher):
 
         self.sysTray = KStatusNotifierItem(self.mainWindow)
         self.sysTray.setCategory(KStatusNotifierItem.Hardware)
-        self.sysTray.setStatus(KStatusNotifierItem.Active)
         self.sysTray.setIconByName("printer")
         self.sysTray.setAssociatedWidget(self.mainWindow)
 
@@ -319,7 +318,7 @@ class JobManager(QObject, monitor.Watcher):
     """
 
     def notify_new_printer (self, printer, title, text):
-        self.sysTray.show()
+        self.sysTray.setStatus(KStatusNotifierItem.Active)
         KNotification.event(title, text, KIcon("konqueror").pixmap(QSize(22,22)))
 
     """unused, see set_special_statusicon
@@ -1154,5 +1153,5 @@ if __name__ == "__main__":
     applet = JobManager()
     if args.isSet("show"):
         applet.mainWindow.show()
-        applet.sysTray.show()
+        applet.sysTray.setStatus(KStatusNotifierItem.Active)
     sys.exit(app.exec_())
