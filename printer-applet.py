@@ -43,7 +43,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
 from PyKDE4.kdecore import i18n, i18nc, i18np, i18ncp, ki18n, KAboutData, KCmdLineArgs, KCmdLineOptions, KStandardDirs, KLocalizedString
-from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction, KNotification, KMessageBox
+from PyKDE4.kdeui import KApplication, KXmlGuiWindow, KStandardAction, KIcon, KToggleAction, KNotification, KMenu, KMessageBox, KStatusNotifierItem
 
 def translate(self, prop):
     """reimplement method from uic to change it to use gettext"""
@@ -242,19 +242,16 @@ class JobManager(QObject, monitor.Watcher):
         self.printersWindow = PrintersWindow(self)
         uic.loadUi(APPDIR + "/" + "printer-applet-printers.ui", self.printersWindow)
 
-        self.sysTray = QSystemTrayIcon(KIcon("printer"), self.mainWindow)
-        #self.sysTray.show()
-        self.connect(self.sysTray, SIGNAL("activated( QSystemTrayIcon::ActivationReason )"), self.toggle_window_display)
-
-        self.menu = QMenu()
-        self.menu.addAction(i18n("_Hide").replace("_", ""), self.on_icon_hide_activate)
-        self.menu.addAction(KIcon("application-exit"), i18n("Quit"), self.on_icon_quit_activate)
-        self.sysTray.setContextMenu(self.menu)
+        self.sysTray = KStatusNotifierItem(self.mainWindow)
+        self.sysTray.setCategory(KStatusNotifierItem.Hardware)
+        self.sysTray.setStatus(KStatusNotifierItem.Active)
+        self.sysTray.setIconByName("printer")
+        self.sysTray.setAssociatedWidget(self.mainWindow)
 
         self.mainWindow.treeWidget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self.mainWindow.treeWidget, SIGNAL("customContextMenuRequested(const QPoint&)"), self.show_treeview_popup_menu)
         #self.connect(self.mainWindow.treeWidget, SIGNAL("itemClicked(QTreeWidgetItem*, int)"), self.printItemClicked)
-        self.rightClickMenu = QMenu(self.mainWindow.treeWidget)
+        self.rightClickMenu = KMenu(self.mainWindow.treeWidget)
         self.cancel = self.rightClickMenu.addAction(i18n("Cancel"), self.on_job_cancel_activate)
         self.hold = self.rightClickMenu.addAction(i18n("_Hold").replace("_",""), self.on_job_hold_activate)
         self.release = self.rightClickMenu.addAction(i18n("_Release").replace("_",""), self.on_job_release_activate)
@@ -354,14 +351,6 @@ class JobManager(QObject, monitor.Watcher):
         error_text = error_text.replace("\n", "<br />")
         error_text = error_text.replace("span", "strong")
         KMessageBox.error(self.mainWindow, error_text, i18n("Error"))
-
-    def toggle_window_display(self, activationReason):
-        if activationReason == QSystemTrayIcon.Trigger:
-            if self.mainWindow.isVisible():
-                self.mainWindow.hide()
-            else:
-                self.mainWindow.show()
-                self.monitor.refresh()
     
     #FIXME, hide printer status window?
     def hideMainWindow(self):
@@ -533,8 +522,10 @@ class JobManager(QObject, monitor.Watcher):
         debugprint ("num_jobs: %d" % num_jobs)
         debugprint ("num_jobs_when_hidden: %d" % self.num_jobs_when_hidden)
 
-        self.sysTray.setVisible(self.special_status_icon or
-                                     num_jobs > self.num_jobs_when_hidden)
+        if self.special_status_icon or num_jobs > self.num_jobs_when_hidden:
+            self.sysTray.setStatus(KStatusNotifierItem.Active)
+        else:
+            self.sysTray.setStatus(KStatusNotifierItem.Passive)
 
     def show_treeview_popup_menu(self, postition):
         # Right-clicked.
@@ -565,13 +556,6 @@ class JobManager(QObject, monitor.Watcher):
 
     def on_icon_popupmenu(self, icon, button, time):
         self.icon_popupmenu.popup (None, None, None, button, time)
-
-    def on_icon_hide_activate(self):
-        self.num_jobs_when_hidden = len (self.jobs.keys ())
-        self.set_statusicon_visibility ()
-
-    def on_icon_quit_activate(self):
-        app.quit()
 
     def on_job_cancel_activate(self):
         try:
@@ -652,11 +636,11 @@ class JobManager(QObject, monitor.Watcher):
         if tooltip == None:
             num_jobs = len (self.jobs)
             if num_jobs == 0:
-                tooltip = i18n("No documents queued")
+                tooltipText = i18n("No documents queued")
             else:
-                tooltip = i18np("1 document queued", "%1 documents queued", num_jobs)
+                tooltipText = i18np("1 document queued", "%1 documents queued", num_jobs)
 
-        self.sysTray.setToolTip(tooltip)
+        self.sysTray.setToolTip("printer", "Printer Applet", tooltipText)
 
     def update_status (self, have_jobs=None):
         # Found out which printer state reasons apply to our active jobs.
