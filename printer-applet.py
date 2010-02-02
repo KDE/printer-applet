@@ -640,7 +640,7 @@ class JobManager(QObject, monitor.Watcher):
             else:
                 tooltipText = i18np("1 document queued", "%1 documents queued", num_jobs)
 
-        self.sysTray.setToolTip("printer", "Printer Applet", tooltipText)
+        self.sysTray.setToolTip("printer", i18n("Printer Applet"), tooltipText)
 
     def update_status (self, have_jobs=None):
         # Found out which printer state reasons apply to our active jobs.
