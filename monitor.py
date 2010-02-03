@@ -54,9 +54,6 @@ def collect_printer_state_reasons (connection):
 
     for name, printer in printers.iteritems ():
         reasons = printer["printer-state-reasons"]
-        if type (reasons) != list:
-            # Work around a bug that was fixed in pycups-1.9.20.
-            reasons = [reasons]
         for reason in reasons:
             if reason == "none":
                 break
@@ -121,7 +118,7 @@ class Monitor:
     DBUS_IFACE="com.redhat.PrinterSpooler"
 
     def __init__(self, watcher, bus=None, my_jobs=True, specific_dests=None,
-                 monitor_jobs=True):
+                 monitor_jobs=True, host=None, port=None, encryption=None):
         self.watcher = watcher
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
@@ -129,6 +126,19 @@ class Monitor:
         self.jobs = {}
         self.printer_state_reasons = {}
         self.printers = set()
+        self.process_pending_events = True
+        self.fetch_jobs_timer = None
+
+        if host:
+            cups.setServer (host)
+        if port:
+            cups.setPort (port)
+        if encryption:
+            cups.setEncryption (encryption)
+        self.user = cups.getUser ()
+        self.host = cups.getServer ()
+        self.port = cups.getPort ()
+        self.encryption = cups.getEncryption ()
 
         self.which_jobs = "not-completed"
         self.reasons_seen = {}
@@ -136,14 +146,20 @@ class Monitor:
         self.still_connecting = set()
         self.connecting_to_device = {}
         self.received_any_dbus_signals = False
+        self.update_timer = None
 
         if bus == None:
-            bus = dbus.SystemBus ()
+            try:
+                bus = dbus.SystemBus ()
+            except dbus.exceptions.DBusException:
+                # System bus not running.
+                pass
 
-        bus.add_signal_receiver (self.handle_dbus_signal,
-                                 path=self.DBUS_PATH,
-                                 dbus_interface=self.DBUS_IFACE)
-        self.bus = bus
+        if bus != None:
+            bus.add_signal_receiver (self.handle_dbus_signal,
+                                     path=self.DBUS_PATH,
+                                     dbus_interface=self.DBUS_IFACE)
+            self.bus = bus
 
         self.sub_id = -1
         self.refresh ()
@@ -153,18 +169,27 @@ class Monitor:
 
     def cleanup (self):
         if self.sub_id != -1:
+            user = cups.getUser ()
             try:
-                c = cups.Connection ()
+                cups.setUser (self.user)
+                c = cups.Connection (host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
                 c.cancelSubscription (self.sub_id)
                 debugprint ("Canceled subscription %d" % self.sub_id)
             except:
                 pass
+            cups.setUser (user)
 
-        self.bus.remove_signal_receiver (self.handle_dbus_signal,
-                                         path=self.DBUS_PATH,
-                                         dbus_interface=self.DBUS_IFACE)
+        if self.bus != None:
+            self.bus.remove_signal_receiver (self.handle_dbus_signal,
+                                             path=self.DBUS_PATH,
+                                             dbus_interface=self.DBUS_IFACE)
 
         self.watcher.monitor_exited (self)
+
+    def set_process_pending (self, whether):
+        self.process_pending_events = whether
 
     def check_still_connecting(self):
         """Timer callback to check on connecting-to-device reasons."""
@@ -256,7 +281,8 @@ class Monitor:
                     else:
                         # Don't notify about this, as it must be stale.
                         debugprint ("Ignoring stale connecting-to-device")
-                        debugprint (pprint.pformat (printer_jobs))
+                        if get_debugging ():
+                            debugprint (pprint.pformat (printer_jobs))
 
         self.update_connecting_devices (printer_jobs)
         items = self.reasons_seen.keys ()
@@ -269,8 +295,12 @@ class Monitor:
 
     def get_notifications(self):
         debugprint ("get_notifications")
+        user = cups.getUser ()
         try:
-            c = cups.Connection ()
+            cups.setUser (self.user)
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
 
             try:
                 try:
@@ -279,6 +309,7 @@ class Monitor:
                 except AttributeError:
                     notifications = c.getNotifications ([self.sub_id])
             except cups.IPPError, (e, m):
+                cups.setUser (user)
                 if e == cups.IPP_NOT_FOUND:
                     # Subscription lease has expired.
                     self.sub_id = -1
@@ -288,23 +319,20 @@ class Monitor:
                 self.watcher.cups_ipp_error (self, e, m)
                 return True
         except RuntimeError:
+            cups.setUser (user)
             self.watcher.cups_connection_error (self)
             return True
 
+        cups.setUser (user)
         deferred_calls = []
         jobs = self.jobs.copy ()
         for event in notifications['events']:
             seq = event['notify-sequence-number']
-            try:
-                if seq <= self.sub_seq:
-                    # Work around a bug in pycups < 1.9.34
-                    continue
-            except AttributeError:
-                pass
             self.sub_seq = seq
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
-            debugprint (pprint.pformat (event))
+            if get_debugging ():
+                debugprint (pprint.pformat (event))
             if nse.startswith ('printer-'):
                 # Printer events
                 name = event['printer-name']
@@ -330,9 +358,6 @@ class Monitor:
                                             (self, name)))
                 elif name in self.printers:
                     printer_state_reasons = event['printer-state-reasons']
-                    if type (printer_state_reasons) != list:
-                        # Work around a bug in pycups < 1.9.36
-                        printer_state_reasons = [printer_state_reasons]
 
                     reasons = []
                     for reason in printer_state_reasons:
@@ -373,14 +398,17 @@ class Monitor:
                 deferred_calls.append ((self.watcher.job_added,
                                         (self, jobid, nse, event,
                                          jobs[jobid].copy ())))
-            elif nse == 'job-completed':
-                try:
-                    del jobs[jobid]
-                    deferred_calls.append ((self.watcher.job_removed,
-                                            (self, jobid, nse, event)))
-                except KeyError:
-                    pass
-                continue
+            elif (nse == 'job-completed' or
+                  (nse == 'job-state-changed' and
+                   event['job-state'] == cups.IPP_JOB_COMPLETED)):
+                if not (self.which_jobs in ['completed', 'all']):
+                    try:
+                        del jobs[jobid]
+                        deferred_calls.append ((self.watcher.job_removed,
+                                                (self, jobid, nse, event)))
+                    except KeyError:
+                        pass
+                    continue
 
             try:
                 job = jobs[jobid]
@@ -396,11 +424,13 @@ class Monitor:
             deferred_calls.append ((self.watcher.job_event,
                                    (self, jobid, nse, event, job.copy ())))
 
-        self.update (jobs)
+        self.set_process_pending (False)
+        self.update_jobs (jobs)
         self.jobs = jobs
 
         for (fn, args) in deferred_calls:
             fn (*args)
+        self.set_process_pending (True)
 
         # Update again when we're told to.  If we're getting CUPS
         # D-Bus signals, however, rely on those instead.
@@ -410,13 +440,21 @@ class Monitor:
 
         return False
 
-    def refresh(self):
+    def refresh(self, which_jobs=None, refresh_all=True):
         debugprint ("refresh")
 
+        if which_jobs != None:
+            self.which_jobs = which_jobs
+
+        user = cups.getUser ()
         try:
-            c = cups.Connection ()
+            cups.setUser (self.user)
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
         except RuntimeError:
             self.watcher.cups_connection_error (self)
+            cups.setUser (user)
             return
 
         if self.sub_id != -1:
@@ -447,8 +485,26 @@ class Monitor:
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
 
+        cups.setUser (user)
+
         QTimer.singleShot(MIN_REFRESH_INTERVAL * 1000, self.get_notifications)
         debugprint ("Created subscription %d" % self.sub_id)
+
+        # Doesn't work, and I don't know how to fix at the moment
+        #if self.monitor_jobs:
+            #jobs = self.jobs.copy ()
+            #if self.which_jobs not in ['all', 'completed']:
+                ## Filter out completed jobs.
+                #filtered = {}
+                #for jobid, job in jobs.iteritems ():
+                    #if job['job-state'] < cups.IPP_JOB_CANCELED:
+                        #filtered[jobid] = job
+                #jobs = filtered
+
+            #self.fetch_first_job_id = 1
+            #QTimer.singleShot(MIN_REFRESH_INTERVAL * 1000, self.fetch_jobs)
+        #else:
+            #jobs = {}
 
         try:
             if self.monitor_jobs:
@@ -457,15 +513,8 @@ class Monitor:
             else:
                 jobs = {}
             self.printer_state_reasons = collect_printer_state_reasons (c)
-            dests = c.getDests ()
-            printers = set()
-            for (printer, instance) in dests.keys ():
-                if printer == None:
-                    continue
-                if instance != None:
-                    continue
-                printers.add (printer)
-            self.printers = printers
+            dests = c.getPrinters ()
+            self.printers = set(dests.keys ())
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
             return
@@ -481,9 +530,13 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
+        self.set_process_pending (False)
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
-        self.update (jobs)
+        self.update_jobs (jobs)
+        self.jobs = jobs
+        self.set_process_pending (True)
+        return False
 
         self.jobs = jobs
         return False
@@ -510,8 +563,130 @@ class Monitor:
 
         return (printer_jobs, my_printers)
 
-    def update(self, jobs):
-        debugprint ("update")
+    def fetch_jobs (self, refresh_all):
+        if not self.process_pending_events:
+            # Skip this call.  We'll get called again soon.
+            return True
+
+        user = cups.getUser ()
+        try:
+            cups.setUser (self.user)
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
+        except RuntimeError:
+            self.watcher.cups_connection_error (self)
+            self.fetch_jobs_timer = None
+            cups.setUser (user)
+            return False
+
+        limit = 1
+        try:
+            fetched = c.getJobs (which_jobs=self.which_jobs,
+                                 my_jobs=self.my_jobs,
+                                 first_job_id=self.fetch_first_job_id,
+                                 limit=limit)
+        except cups.IPPError, (e, m):
+            self.watcher.cups_ipp_error (self, e, m)
+            self.fetch_jobs_timer = None
+            cups.setUser (user)
+            return False
+
+        cups.setUser (user)
+        got = len (fetched)
+        debugprint ("Got %s jobs, asked for %s" % (got, limit))
+
+        deferred_calls = []
+        jobs = self.jobs.copy ()
+        jobids = fetched.keys ()
+        jobids.sort ()
+        if got > 0:
+            last_jobid = jobids[got - 1]
+        else:
+            last_jobid = self.fetch_first_job_id + limit
+        for jobid in xrange (self.fetch_first_job_id, last_jobid + 1):
+            try:
+                job = fetched[jobid]
+                if self.specific_dests != None:
+                    uri = job.get('job-printer-uri', '/')
+                    i = uri.rfind ('/')
+                    printer = uri[i + 1:]
+                    if printer not in self.specific_dests:
+                        raise KeyError
+
+                if jobs.has_key (jobid):
+                    fn = self.watcher.job_event
+                else:
+                    fn = self.watcher.job_added
+
+                jobs[jobid] = job
+                deferred_calls.append ((fn,
+                                        (self, jobid, '', {}, job.copy ())))
+            except KeyError:
+                # No job by that ID.
+                if jobs.has_key (jobid):
+                    del jobs[jobid]
+                    deferred_calls.append ((self.watcher.job_removed,
+                                            (self, jobid, '', {})))
+
+        jobids = jobs.keys ()
+        jobids.sort ()
+        if got < limit:
+            trim = False
+            for i in range (len (jobids)):
+                jobid = jobids[i]
+                if not trim and jobid > last_jobid:
+                    trim = True
+
+                if trim:
+                    del jobs[jobid]
+                    deferred_calls.append ((self.watcher.job_removed,
+                                            (self, jobid, '', {})))
+
+        self.update_jobs (jobs)
+        self.jobs = jobs
+
+        for (fn, args) in deferred_calls:
+            fn (*args)
+
+        if got < limit:
+            # That's all.  Don't run this timer again.
+            self.fetch_jobs_timer = None
+            return False
+
+        # Remember where we got up to and run this timer again.
+        next = jobid + 1
+
+        while not refresh_all and self.jobs.has_key (next):
+            next += 1
+
+        self.fetch_first_job_id = next
+        return True
+
+    def sort_jobs_by_printer (self, jobs=None):
+        if jobs == None:
+            jobs = self.jobs
+
+        my_printers = set()
+        printer_jobs = {}
+        for job, data in jobs.iteritems ():
+            state = data.get ('job-state', cups.IPP_JOB_CANCELED)
+            if state >= cups.IPP_JOB_CANCELED:
+                continue
+            uri = data.get ('job-printer-uri', '')
+            i = uri.rfind ('/')
+            if i == -1:
+                continue
+            printer = uri[i + 1:]
+            my_printers.add (printer)
+            if not printer_jobs.has_key (printer):
+                printer_jobs[printer] = {}
+            printer_jobs[printer][job] = data
+
+        return (printer_jobs, my_printers)
+
+    def update_jobs(self, jobs):
+        debugprint ("update_jobs")
         (printer_jobs, my_printers) = self.sort_jobs_by_printer (jobs)
         self.check_state_reasons (my_printers, printer_jobs)
 
