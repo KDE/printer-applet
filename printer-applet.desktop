@@ -101,3 +101,4 @@ Type=Application
 Icon=printer
 OnlyShowIn=KDE;
 X-KDE-autostart-phase=2
+X-DocPath=printer-applet
