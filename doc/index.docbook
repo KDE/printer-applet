@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<!DOCTYPE article PUBLIC "-//KDE//DTD DocBook XML V4.2-Based Variant V1.1//EN"
+"dtd/kdex.dtd" [
+<!ENTITY % addindex "IGNORE">
+<!ENTITY % English "INCLUDE" > <!-- change language only here -->
+]>
+
+<article lang="&language;">
+<title>Printer Applet</title>
+<articleinfo>
+
+<authorgroup>
+<author><firstname>Jonathan</firstname> <surname>Riddell</surname> <email>jriddell@ubuntu.com</email></author>
+
+<!-- TRANS:ROLES_OF_TRANSLATORS -->
+</authorgroup>
+
+<date>2010-02-05</date>
+<releaseinfo>&kde; 4.4</releaseinfo>
+
+<keywordset>
+<keyword>KDE</keyword>
+<keyword>Printer</keyword>
+</keywordset>
+</articleinfo>
+<para>Printer Applet is a system tray utility.  It shows current print jobs,
+shows printer warnings and errors and shows when printers that have
+been plugged in for the first time are being auto-configured by
+hal-cups-utils.</para>
+
+<para>It replaces kjobviewer from &kde; 3.</para>
+
+<para>It is a &kde; port of system-config-printer's applet.py by Tim Waugh from Red Hat.</para>
+
+<para>Printer Applet is displayed in the system tray when a print 
+job is launched. Click on the printer icon in the system tray and you will 
+see a dialog with running print jobs.</para>
+
+<para>In this dialog you are able to manage your print jobs. 
+Use the menu items to refresh the job list, show completed jobs 
+and the printer status.</para>
+
+<para>A &RMB; click on a job shows a context menu with options to cancel, hold, release 
+and print a job.</para>
+
+<!---
+No connection to the selected printer -> notification 
+
+RMB in the systray: Quit - Hide? How to enable it again, if hidden?
+-->
+</article>
