@@ -268,11 +268,11 @@ class JobManager(QObject, monitor.Watcher):
         refreshAction.setShortcut(QKeySequence(Qt.Key_F5))
         self.connect(refreshAction, SIGNAL("triggered(bool)"), self.on_refresh_activate);
 
-        showCompletedJobsAction = KToggleAction("Show Completed Jobs", self.mainWindow)
+        showCompletedJobsAction = KToggleAction( i18n( "Show Completed Jobs" ), self.mainWindow)
         self.mainWindow.actionCollection().addAction("show_completed_jobs", showCompletedJobsAction)
         self.connect(showCompletedJobsAction, SIGNAL("triggered(bool)"), self.on_show_completed_jobs_activate);
 
-        showPrinterStatusAction = KToggleAction("Show Printer Status", self.mainWindow)
+        showPrinterStatusAction = KToggleAction( i18n( "Show Printer Status" ), self.mainWindow)
         self.mainWindow.actionCollection().addAction("show_printer_status", showPrinterStatusAction)
         self.connect(showPrinterStatusAction, SIGNAL("triggered(bool)"), self.on_show_printer_status_activate);
         
