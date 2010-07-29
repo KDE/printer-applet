@@ -237,10 +237,10 @@ class JobManager(QObject, monitor.Watcher):
             APPDIR = file.left(file.lastIndexOf('/'))
 
         self.mainWindow = MainWindow()
-        uic.loadUi(APPDIR + '/' + "printer-applet.ui", self.mainWindow)
+        uic.loadUi(unicode(APPDIR + '/' + "printer-applet.ui"), self.mainWindow)
 
         self.printersWindow = PrintersWindow(self)
-        uic.loadUi(APPDIR + '/' + "printer-applet-printers.ui", self.printersWindow)
+        uic.loadUi(unicode(APPDIR + '/' + "printer-applet-printers.ui"), self.printersWindow)
 
         self.sysTray = KStatusNotifierItem(self.mainWindow)
         self.sysTray.setCategory(KStatusNotifierItem.Hardware)
