@@ -5,22 +5,18 @@ macro_optional_find_package(PythonLibrary)
 macro_optional_find_package(SIP)
 
 find_package(PyQt4)
-IF(NOT PYQT4_FOUND)
-    macro_log_feature(PYQT4_FOUND "PyQt4" "PyQt4 was not found.  It is needed by printer-applet to run. (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://www.riverbankcomputing.co.uk/software/pyqt/intro" FALSE)
-ENDIF(NOT PYQT4_FOUND)
+macro_log_feature(PYQT4_FOUND "PyQt4" "Python bindings for Qt-4.x library" "http://www.riverbankcomputing.co.uk/software/pyqt/intro" FALSE "" "Needed by printer-applet to run. (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)")
 
 find_package(PyKDE4)
-IF(NOT PYKDE4_FOUND)
-    macro_log_feature(PYKDE4_FOUND "PyKDE4" "PyKDE4 was not found.  It is needed by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://websvn.kde.org/trunk/KDE/kdebindings/python/pykde4/" FALSE)
-ENDIF(NOT PYKDE4_FOUND)
+macro_log_feature(PYKDE4_FOUND "PyKDE4" "Python bindings for KDE 4.x" "http://websvn.kde.org/trunk/KDE/kdebindings/python/pykde4/" FALSE "" "Needed by printer-applet to run. (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)")
 
 find_package(PyCups)
-IF(NOT PYCUPS_FOUND)
-    macro_log_feature(PYCUPS_FOUND "PyCups" "PyCups was not found.  It is needed by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)" "http://cyberelk.net/tim/software/pycups/" FALSE)
-ENDIF(NOT PYCUPS_FOUND)
+macro_log_feature(PYCUPS_FOUND "PyCups" "Python bindings for CUPS" "http://cyberelk.net/tim/software/pycups/" FALSE "" "Required by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)")
 
 IF(PYQT4_FOUND AND PYKDE4_FOUND AND PYCUPS_FOUND)
-    SET(INSTALL_PRINTER_APPLET TRUE)
+    option(INSTALL_PRINTER_APPLET TRUE)
+ELSE(PYQT4_FOUND AND PYKDE4_FOUND AND PYCUPS_FOUND)
+    option(INSTALL_PRINTER_APPLET FALSE)
 ENDIF(PYQT4_FOUND AND PYKDE4_FOUND AND PYCUPS_FOUND)
 
 IF(INSTALL_PRINTER_APPLET)
