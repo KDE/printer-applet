@@ -14,9 +14,7 @@ find_package(PyCups)
 macro_log_feature(PYCUPS_FOUND "PyCups" "Python bindings for CUPS" "http://cyberelk.net/tim/software/pycups/" FALSE "" "Required by printer-applet to run.  (Use -DINSTALL_PRINTER_APPLET=TRUE to install anyway)")
 
 IF(PYQT4_FOUND AND PYKDE4_FOUND AND PYCUPS_FOUND)
-    option(INSTALL_PRINTER_APPLET TRUE)
-ELSE(PYQT4_FOUND AND PYKDE4_FOUND AND PYCUPS_FOUND)
-    option(INSTALL_PRINTER_APPLET FALSE)
+    set(INSTALL_PRINTER_APPLET TRUE)
 ENDIF(PYQT4_FOUND AND PYKDE4_FOUND AND PYCUPS_FOUND)
 
 IF(INSTALL_PRINTER_APPLET)
