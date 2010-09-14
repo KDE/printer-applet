@@ -47,5 +47,12 @@ and print a job.</para>
 No connection to the selected printer -> notification 
 
 RMB in the systray: Quit - Hide? How to enable it again, if hidden?
+
+How can I disable the printer-applet?
+
+Create a file named "printer-applet.desktop" in ~/.config/autostart with the following content:
+Code: Select all
+[Desktop Entry]
+Hidden=true
 -->
 </article>
