@@ -319,7 +319,7 @@ class JobManager(QObject, monitor.Watcher):
 
     def notify_new_printer (self, printer, title, text):
         self.sysTray.setStatus(KStatusNotifierItem.Active)
-        KNotification.event(title, text, KIcon("konqueror").pixmap(QSize(22,22)))
+        KNotification.event(title, text, KIcon("printer").pixmap(QSize(22,22)))
 
     """unused, see set_special_statusicon
     def set_statusicon_from_pixbuf (self, pb):
@@ -721,7 +721,7 @@ class JobManager(QObject, monitor.Watcher):
         """
 
         (title, text) = reason.get_description ()
-        KNotification.event("Other", text, KIcon("konqueror").pixmap(QSize(22,22)))
+        KNotification.event("Other", text, KIcon("printer").pixmap(QSize(22,22)))
         self.set_statusicon_visibility ()
 
     ## monitor.Watcher interface
