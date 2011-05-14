@@ -1,6 +1,9 @@
 project(printer-applet)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}  ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules )
 
+find_package(KDE4)
+include( KDE4Defaults )
+
 macro_optional_find_package(PythonLibrary)
 macro_optional_find_package(SIP)
 
