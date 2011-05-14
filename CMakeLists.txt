@@ -4,6 +4,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}  ${CMAKE_CURRENT_SOURCE_DIR}/cmake-mo
 find_package(KDE4)
 include( KDE4Defaults )
 
+add_subdirectory(doc)
+
 macro_optional_find_package(PythonLibrary)
 macro_optional_find_package(SIP)
 
