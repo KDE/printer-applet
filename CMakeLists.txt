@@ -1,4 +1,9 @@
 project(printer-applet)
+
+if(NOT UNIX)
+  message(FATAL_ERROR "printer-applet is only supposed to be built on Unix platforms.")
+endif(NOT UNIX)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}  ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules )
 
 find_package(KDE4)
