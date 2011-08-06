@@ -1,5 +1,17 @@
 project(printer-applet)
+
+if(NOT UNIX)
+  message(FATAL_ERROR "printer-applet is only supposed to be built on Unix platforms.")
+endif(NOT UNIX)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}  ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules )
+
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    find_package(KDE4)
+    include( KDE4Defaults )
+endif()
+
+add_subdirectory(doc)
 
 macro_optional_find_package(PythonLibrary)
 macro_optional_find_package(SIP)
