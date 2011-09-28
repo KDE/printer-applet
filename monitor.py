@@ -400,6 +400,8 @@ class Monitor:
                 except cups.IPPError, (e, m):
                     self.watcher.cups_ipp_error (self, e, m)
                     jobs[jobid] = {'job-k-octets': 0}
+                except KeyError:
+                    jobs[jobid] = {'job-k-octets': 0}
 
                 deferred_calls.append ((self.watcher.job_added,
                                         (self, jobid, nse, event,
