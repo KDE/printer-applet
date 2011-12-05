@@ -15,8 +15,8 @@
 <!-- TRANS:ROLES_OF_TRANSLATORS -->
 </authorgroup>
 
-<date>2010-02-05</date>
-<releaseinfo>&kde; 4.4</releaseinfo>
+<date>2011-12-04</date>
+<releaseinfo>&kde; 4.8</releaseinfo>
 
 <keywordset>
 <keyword>KDE</keyword>
@@ -25,8 +25,7 @@
 </articleinfo>
 <para>Printer Applet is a system tray utility.  It shows current print jobs,
 shows printer warnings and errors and shows when printers that have
-been plugged in for the first time are being auto-configured by
-hal-cups-utils.</para>
+been plugged in for the first time are being auto-configured.</para>
 
 <para>It replaces kjobviewer from &kde; 3.</para>
 
